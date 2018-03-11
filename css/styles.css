@@ -1,0 +1,104 @@
+body {
+	line-height: 30px;
+	font-family: Sans-Serif;
+}
+label { 
+	background-color:red; 
+	color: white; 
+}
+input[type="checkbox"]:checked + label {
+    background: green;
+}
+.mandatory {
+	color: red;
+}
+.centered {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -50px;
+  margin-left: -100px;
+}
+.column {
+	column-count: 1;
+}
+.btn {
+    border: none; /* Remove borders */
+    color: white; /* Add a text color */
+    padding: 14px 28px; /* Add some padding */
+    cursor: pointer; /* Add a pointer cursor on mouse-over */
+}
+
+.good {background-color: #4CAF50;} /* Green */
+.success:hover {background-color: #46a049;}
+
+.info {background-color: #2196F3;} /* Blue */
+.info:hover {background: #0b7dda;}
+
+.warning {background-color: #ff9800;} /* Orange */
+.warning:hover {background: #e68a00;}
+
+.danger {background-color: #f44336;} /* Red */ 
+.danger:hover {background: #da190b;}
+
+.default {background-color: #e7e7e7; color: black;} /* Gray */ 
+.default:hover {background: #ddd;}
+
+/* The navigation bar */
+.navbar {
+    overflow: hidden;
+    background-color: #333;
+    position: fixed; /* Set the navbar to fixed position */
+    top: 0; /* Position the navbar at the top of the page */
+    width: 100%; /* Full width */
+}
+
+/* Links inside the navbar */
+.navbar a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+/* Buttons inside the navbar */
+.navbar button {
+    border: none; /* Remove borders */
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 21px 28px;
+    text-decoration: none;
+	background-color: #333;
+}
+
+/* Change background on mouse-over */
+.navbar a:hover, .navbar button:hover {
+    background: #ddd;
+    color: black;
+}
+
+@media only screen and (max-width: 600px) {
+    /* For mobiles: */
+	.main { 
+		margin-top: 120px; 
+	}
+	.largebox { /* make text input boxes bigger on a mobile device */
+		height: 30px;
+		width: 100%;
+		font-size: 14pt;
+	}
+}
+@media only screen and (min-width: 601px) {
+    /* For desktop: */
+	.main {  margin-top: 60px; }
+	.column {
+		column-count: 3;
+		-webkit-column-break-inside: avoid; /* Chrome, Safari, Opera */
+		page-break-inside: avoid; /* Firefox */
+		break-inside: avoid; /* IE 10+ */
+	}
+}
