@@ -1,17 +1,1 @@
-<html>
-Electronic VDI Roadmap
-
-Update 10 Mar 2018 - Chris
-
--- Add login screen (by staff number)
--- COMPLETED Re-script main menu to allow different options for different user levels
--- Script sections in vdi-action.php to allow note view and update, including linking to index.php and vehicle status levels.
--- Add page to allow admin editing of vehicle details (no delete but can hide vehicles from crew selection)
-	>> This should include live edit table - http://www.webslesson.info/2016/02/live-table-add-edit-delete-using-ajax-jquery-in-php-mysql.html
--- Add page to allow admin editing of staff details
--- Consider adding email notifications to staff/DLOs on completion of VDI or fault raised
--- Add in drugs and service date monitoring
--- Automate flaging vehicles for service and MOT
--- Vehicle defect section
--- Easy DLO screen (similar to spreadsheet layout)
-</html>
+Naviagte to https://github.com/chssn/vdi/issues for roadmap and outstanding issues
