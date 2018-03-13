@@ -9,7 +9,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script>
 		function loadXMLDoc(url) {
-			if (window.XMLHttpRequest) { 
+			if (window.XMLHttpRequest) {
 				// code for IE7+, Firefox, Chrome, Opera, Safari
 				xmlhttp=new XMLHttpRequest();
 				xmlhttp.open("POST",url,false);
@@ -24,7 +24,7 @@
 		}
 
 		function TimeOut() {
-			loadXMLDoc('update-vdi-action.php');
+			loadXMLDoc('live-update/update-vdi-action.php');
 			setTimeout("TimeOut()", 300000);
 		}
 	</script>

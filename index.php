@@ -9,7 +9,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script>
 		function loadXMLDoc(url) {
-			if (window.XMLHttpRequest) { 
+			if (window.XMLHttpRequest) {
 				// code for IE7+, Firefox, Chrome, Opera, Safari
 				xmlhttp=new XMLHttpRequest();
 				xmlhttp.open("POST",url,false);
@@ -33,7 +33,7 @@
 		<!-- create menu bar that remains at the top of the page when scrolling -->
 
 		<!-- <button onclick="TimeOut()">Refresh</button>&nbsp;This screen will automatically update every 5 seconds. -->
-		<?php include "include/header.php" ; ?>
+		<?php include "live-update/include/header.php" ; ?>
 		<div class="main" id="row"></div>
 	</body>
 </html>
