@@ -44,10 +44,12 @@
 		} else {
 			// check for cookie being set
 			?>
-			<div class="w3-container w3-display-middle">
+			<div class="w3-container w3-display-middle w3-mobile">
 
 			<div class="w3-center"><br>
 				<img src="images/logo.png" alt="Avatar" style="width:30%" class="w3-circle w3-margin-top">
+				<br />
+				North & East Hertfordshire Operations
 			</div>
 
 			<form class="w3-container" action="login.php" method="post">
