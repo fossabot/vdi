@@ -24,7 +24,7 @@
 		}
 
 		function TimeOut() {
-			loadXMLDoc('update-index.php?');
+			loadXMLDoc('live-update/update-index.php?');
 			setTimeout("TimeOut()", 5000);
 		}
 	</script>
@@ -33,7 +33,7 @@
 		<!-- create menu bar that remains at the top of the page when scrolling -->
 
 		<!-- <button onclick="TimeOut()">Refresh</button>&nbsp;This screen will automatically update every 5 seconds. -->
-		<?php include "live-update/include/header.php" ; ?>
+		<?php include "include/header.php" ; ?>
 		<div class="main" id="row"></div>
 	</body>
 </html>

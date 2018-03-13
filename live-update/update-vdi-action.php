@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php
-require 'include/sql-connect.php';
+require '../include/sql-connect.php';
 $count = 1;
 ?>
 <div class="w3-container">
