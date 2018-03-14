@@ -7,18 +7,18 @@ if(isset($_GET['veh'])) {
 	$value = $_GET['veh'];
 	$decode = base64_decode($value);
 	$identifier = explode("-", $decode);
-	
+
 	//check if this is a valid vdi sheet by subtracting the submission time from now
 	$submission_time = time() - $identifier[1];
 	if($submission_time > 3600) {
 		echo "Error - Invalid time stamp";
 		exit;
 	}
-	
+
 	//get vehicle information from the database
 	$sql = "SELECT * FROM vehicle_list WHERE id=" . $identifier[0] . " LIMIT 1";
 	$result = $conn->query($sql);
-	
+
 	if ($result->num_rows > 0) {
     // output data of each row
 		while($row = $result->fetch_assoc()) {
@@ -31,7 +31,7 @@ if(isset($_GET['veh'])) {
 			$veh_mot_diff = $veh_mot - time();
 			$veh_service_diff = $veh_service - time();
 			$unix_month = 60*60*24*30;
-			
+
 			//format menu colour based on vehicle status
 			if ($row['veh_status'] == 0) {
 				$color = "w3-green";
@@ -40,7 +40,7 @@ if(isset($_GET['veh'])) {
 			} elseif ($row['veh_status'] == 2) {
 				$color = "w3-red";
 			}
-			
+
 			//set vehicle use and get vehicle type
 			$sql_in = "SELECT * FROM vehicle_types WHERE id=" . $veh_type_number . " LIMIT 1";
 			$result_in = $conn->query($sql_in);
@@ -64,13 +64,22 @@ if(isset($_GET['veh'])) {
 ?>
 <html lang="en">
 <head>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-115788103-1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'UA-115788103-1');
+	</script>
 	<title>Vehicle Daily Inspection</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	
+
 	<!-- This script hides the fault description boxes if the corresponding checkbox has been ticked -->
 	<script>
 		function hidetext(vehicle) {
@@ -84,13 +93,13 @@ if(isset($_GET['veh'])) {
 				document.getElementById(cdl).required = true;
 			}
 		};
-		
+
 		//staff number validation script
 		$(document).ready(function() {
-			
+
 			// check change event of the text field
 			$("#staff_id").keyup(function() {
-				
+
 				// get text username text field value
 				var username = $("#staff_id").val();
 
@@ -104,13 +113,13 @@ if(isset($_GET['veh'])) {
 				}
 			});
 		});
-		
+
 		//shrink menu on mobile devices script
 		function shrink_menu() {
 			var x = document.getElementById("small_bar");
 			if (x.className.indexOf("w3-show") == -1) {
 				x.className += " w3-show";
-			} else { 
+			} else {
 				x.className = x.className.replace(" w3-show", "");
 			}
 		}
@@ -138,19 +147,19 @@ if(isset($_GET['veh'])) {
 						<input type="hidden" value="<?php echo $veh_id; ?>" name="veh_id">
 						<input class="w3-input" type="number" name="staff_id" id="staff_id" placeholder="Staff ID Number" pattern="[0-9] {8}" required>
 						<div id="status"></div>
-						
+
 						<!-- create a datalist for typing in the vehicle location -->
 						<datalist id="locations">
 							<?php
 							$sql = "SELECT id, location FROM location ORDER BY location";
 							$result = $conn->query($sql);
-							
+
 							if ($result->num_rows > 0) {
 								// output data of each row
 								while($row = $result->fetch_assoc()) {
 									?>
 									<option value="<?php echo $row["location"]; ?>" id="loc<?php echo $row["id"]; ?>">
-									<?php 
+									<?php
 								}
 							} else {
 								echo "0 results";
@@ -158,7 +167,7 @@ if(isset($_GET['veh'])) {
 							?>
 						</datalist>
 						<br /><input class="w3-input" type="text" list="locations" placeholder="Vehicle Location" name="veh_loc" required>
-						
+
 						<!-- section for vehicle notes, MOT and service dates including auto notify -->
 						<fieldset><legend>Notes</legend>
 							<?php
@@ -177,11 +186,11 @@ if(isset($_GET['veh'])) {
 							?>
 						</fieldset>
 						<fieldset><legend>MOT Status</legend>
-						<?php 
-						if($veh_mot_diff > $unix_month) { 
-							$print = "Ok"; 
+						<?php
+						if($veh_mot_diff > $unix_month) {
+							$print = "Ok";
 							$warn = "w3-green";
-						} elseif (($veh_mot_diff <= $unix_month) && ($veh_mot_diff > 0)) { 
+						} elseif (($veh_mot_diff <= $unix_month) && ($veh_mot_diff > 0)) {
 							$days = intval(intval($veh_mot_diff) / (3600*24));
 							if($days > 0)
 							{
@@ -189,7 +198,7 @@ if(isset($_GET['veh'])) {
 							} else {
 								$days_out = 0;
 							}
-							$print = "MOT is due in $days_out days"; 
+							$print = "MOT is due in $days_out days";
 							$warn = "w3-orange";
 						} elseif ($veh_mot_diff <= 0) {
 							$print = "OVERDUE MOT";
@@ -197,7 +206,7 @@ if(isset($_GET['veh'])) {
 							$exit = 1;
 						}
 						echo "<div class='$warn w3-panel w3-center w3-card-4'>$print</div>";
-							
+
 						//stop the script and display a warning if the MOT has expired.
 						if (isset($exit)) {
 							?>
@@ -209,12 +218,12 @@ if(isset($_GET['veh'])) {
 						}
 						?>
 						</fieldset>
-						<fieldset><legend>Service Status</legend> 
-						<?php 
-						if($veh_service_diff > $unix_month) { 
-							$print = "Ok"; 
+						<fieldset><legend>Service Status</legend>
+						<?php
+						if($veh_service_diff > $unix_month) {
+							$print = "Ok";
 							$warn = "w3-green";
-						} elseif (($veh_service_diff <= $unix_month) && ($veh_service_diff > 0)) { 
+						} elseif (($veh_service_diff <= $unix_month) && ($veh_service_diff > 0)) {
 							$days = intval(intval($veh_mot_diff) / (3600*24));
 							if($days > 0)
 							{
@@ -222,7 +231,7 @@ if(isset($_GET['veh'])) {
 							} else {
 								$days_out = 0;
 							}
-							$print = "Service is due in $days_out days"; 
+							$print = "Service is due in $days_out days";
 							$warn = "w3-orange";
 						} elseif ($veh_service_diff <= 0) {
 							$print = "OVERDUE SERVICE";
@@ -230,7 +239,7 @@ if(isset($_GET['veh'])) {
 						}
 						echo "<div class='$warn w3-panel w3-center w3-card-4'>$print</div>";
 						?>
-						</fieldset>						
+						</fieldset>
 					</div>
 				</fieldset>
 				<fieldset>
@@ -254,7 +263,7 @@ if(isset($_GET['veh'])) {
 										<label for="check_<?php echo $row["id"]; ?>"><?php echo $row["criteria"]; ?></label>
 										<br /><input class="w3-input" type="text" style="display:inline" id="detail_<?php echo $row["id"]; ?>" name="detail_<?php echo $row["id"]; ?>" placeholder="Fault Description" required>
 									</div>
-									<?php 
+									<?php
 								}
 							} else {
 								echo "0 results";
@@ -276,13 +285,13 @@ if(isset($_GET['veh'])) {
 										<label for="check_<?php echo $row["id"]; ?>"><?php echo $row["criteria"]; ?></label>
 										<br /><input class="w3-input" type="text" style="display:inline" id="detail_<?php echo $row["id"]; ?>" name="detail_<?php echo $row["id"]; ?>" placeholder="Fault Description" required>
 									</div>
-									<?php 
+									<?php
 								}
 							} else {
 								echo "0 results";
 							}
 						?>
-				</fieldset>				
+				</fieldset>
 				<!-- consider putting this on a second page so as to update any extra information based on the vehicle - or some kind of dynamic update -->
 				<fieldset>
 					<legend>Miscellaneous</legend>
@@ -304,7 +313,7 @@ if(isset($_GET['veh'])) {
 										}
 										?>
 									</div>
-									<?php 
+									<?php
 								}
 							} else {
 								echo "0 results";
@@ -331,7 +340,7 @@ if(isset($_GET['veh'])) {
 										}
 										?>
 									</div>
-									<?php 
+									<?php
 								}
 							} else {
 								echo "0 results";
@@ -358,7 +367,7 @@ if(isset($_GET['veh'])) {
 										}
 										?>
 									</div>
-									<?php 
+									<?php
 								}
 							} else {
 								echo "0 results";

@@ -2,6 +2,15 @@
 <?php require 'include/sql-connect.php'; ?>
 <html lang="en">
 	<head>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-115788103-1"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+
+			gtag('config', 'UA-115788103-1');
+		</script>
 		<title>Vehicle Daily Inspection</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -63,11 +72,11 @@
 			var x = document.getElementById(id);
 			if (x.className.indexOf("w3-show") == -1) {
 				x.className += " w3-show";
-				x.previousElementSibling.className = 
+				x.previousElementSibling.className =
 				x.previousElementSibling.className.replace("w3-grey", "w3-green");
-			} else { 
+			} else {
 				x.className = x.className.replace(" w3-show", "");
-				x.previousElementSibling.className = 
+				x.previousElementSibling.className =
 				x.previousElementSibling.className.replace("w3-green", "w3-grey");
 			}
 		}
