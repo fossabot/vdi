@@ -1,12 +1,13 @@
+<?php require 'include/login-check.php'; ?>
 <!DOCTYPE html>
 <html>
-<?php 
+<?php
 require 'include/sql-connect.php';
 
 //get location id
 $sql = "SELECT id FROM location WHERE location='" . $_POST['veh_loc'] . "' LIMIT 1";
 $result = $conn->query($sql);
-	
+
 if ($result->num_rows > 0) {
 	while($row = $result->fetch_assoc()) {
 		$veh_loc = $row['id'];
@@ -45,7 +46,7 @@ foreach($_POST as $x=>$x_value) {
 		$split = explode('_', $x);
 		$ipid_b = $split[1];
 		$y_temp = $x_value;
-		
+
 		if($chk == 0) {
 			$comment = $x_value;
 			$ipid = $ipid_b;
@@ -65,7 +66,7 @@ foreach($_POST as $x=>$x_value) {
 }
 
 $sql = substr($sql, 0, -1); //remove the last ; from the SQL INSERT command.
-	
+
 //put something in here to generate an email to the user and DLO team (if there are any points raised)
 
 if (mysqli_multi_query($conn, $sql)) {

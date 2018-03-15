@@ -1,3 +1,4 @@
+<?php require 'include/login-check.php'; ?>
 <!DOCTYPE html>
 <?php
 require 'include/sql-connect.php';
