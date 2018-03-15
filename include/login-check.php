@@ -12,7 +12,7 @@ if(!isset($_COOKIE['vdiuser'])) { // if no cookie is set then go to the login pa
 
   if ($result->num_rows > 0) {
       //header('Location: /vdi/');
-      echo "logged in";
+      //echo "logged in";
   } else {
       header('Location: ../login.php');
   }
