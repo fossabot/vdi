@@ -1,6 +1,6 @@
 <?php
 if(!isset($_COOKIE['vdiuser'])) { // if no cookie is set then go to the login page
-  header('Location: ../login.php');
+  header('Location: /vdi/login.php');
 } else {  // if a cookie is set...
   $ck_check = $_COOKIE['vdiuser'];
   //see if the cookie data is valid
@@ -14,7 +14,7 @@ if(!isset($_COOKIE['vdiuser'])) { // if no cookie is set then go to the login pa
       //header('Location: /vdi/');
       //echo "logged in";
   } else {
-      header('Location: ../login.php');
+      header('Location: /vdi/login.php');
   }
 }
 ?>

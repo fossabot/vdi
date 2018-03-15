@@ -12,7 +12,7 @@ if(isset($_GET['veh'])) {
 	//check if this is a valid vdi sheet by subtracting the submission time from now
 	$submission_time = time() - $identifier[1];
 	if($submission_time > 3600) {
-		echo "Error - Invalid time stamp";
+		echo "Error - Invalid time stamp<br />Click <a href='/vdi/'>here</a> to return to the main page";
 		exit;
 	}
 

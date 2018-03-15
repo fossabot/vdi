@@ -1,4 +1,8 @@
 <?php
+if (isset($_GET['logout'])) {
+	setcookie('vdiuser', 0, 1);
+}
+
 if (isset($_POST['login'])) {
 	require 'include/sql-connect.php';
 	require 'include/ppp.php';
@@ -90,7 +94,6 @@ if (isset($_POST['login'])) {
 					<label><b>Password</b></label>
 					<input class="w3-input w3-border" type="password" placeholder="Enter Password" name="psw" required>
 					<button class="w3-button w3-block w3-green w3-section w3-padding" type="submit" name="login">Login</button>
-					<input class="w3-check w3-margin-top" type="checkbox" name="remember" checked="checked"> Remember me
 				</div>
 			</form>
 		</div>
