@@ -141,7 +141,7 @@ if(isset($_GET['veh'])) {
 		</div>
 		<br /><br />
 		<div class="w3-container">
-			<form action="vdi-submit.php" method="post" id="vdi_post" name="vdi_post" onsubmit="return confirm('Are you sure you wish to submit this VDI?');">
+			<form action="include/submit-vdi.php" method="post" id="vdi_post" name="vdi_post" onsubmit="return confirm('Are you sure you wish to submit this VDI?');">
 				<fieldset>
 					<legend>Details</legend>
 					<div>

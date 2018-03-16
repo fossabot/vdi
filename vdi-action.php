@@ -30,7 +30,7 @@
 				<div class="w3-container">
 					<?php
 					//list all outstanding reports
-					$sql = "SELECT * FROM vdi_log_detail INNER JOIN inspection_points ON vdi_log_detail.inspection_point_id = inspection_points.id WHERE report = '0' AND action_closed = '0' ORDER BY vdi_log_detail.id";
+					$sql = "SELECT *, vdi_log_detail.id as id, inspection_points.id as ipid  FROM vdi_log_detail INNER JOIN inspection_points ON vdi_log_detail.inspection_point_id = inspection_points.id WHERE report = '0' AND action_closed = '0' ORDER BY vdi_log_detail.id";
 					$result = $conn->query($sql);
 
 					if ($result->num_rows > 0) {
@@ -85,19 +85,19 @@
 							</tr>
 							<div id="id<?php echo $row['id']; ?>" class="w3-modal">
 								<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
-									<form class="w3-container" action="/action_page.php">
+									<form method="post" class="w3-container" name="form_comment<?php echo $row['id']; ?>" action="include/submit-update.php?row=<?php echo $row['id']; ?>&veh=<?php echo $row_log['callsign']; ?>">
 										<div class="w3-section w3-margin">
 											<label><b>Details</b></label>
-											<textarea class="w3-input w3-border w3-margin-bottom" rows="10" name="comment" placeholder="Enter a note here..."></textarea>
+											<textarea class="w3-input w3-border w3-margin-bottom" rows="10" name="comment<?php echo $row['id']; ?>" placeholder="Enter a note here..." required></textarea>
 											<label><b>Vehicle Status</b></label>
-											<select class="w3-select" name="option">
+											<select class="w3-select" name="status<?php echo $row['id']; ?>" required>
 												<option value="" disabled selected>Choose an status</option>
 												<option value="2">Off The Road</option>
 												<option value="1">Advisory Note</option>
 												<option value="0">On The Road</option>
 											</select>
 											<label><b>Outcome</b></label>
-											<select class="w3-select" name="option">
+											<select class="w3-select" name="outcome<?php echo $row['id']; ?>" required>
 												<option value="" disabled selected>Choose an outcome</option>
 												<option value="1">3rd party action required (ie mechanic needed)</option>
 												<option value="2">Providing an update to the report</option>
@@ -115,7 +115,20 @@
 							<div id="notes<?php echo $row['id']; ?>" class="w3-modal">
 								<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
 									<div class="w3-section w3-margin">
-										<p>Txt here</p> <!-- php mysql bit in here to display historical notes with newest at the top -->
+										<?php
+										$hx_sql = "SELECT * FROM vdi_log_actions WHERE vehicle_log_detail_id = " . $row['id'] . " ORDER BY timestamp DESC";
+										$hx_result = $conn->query($hx_sql);
+
+										if ($hx_result->num_rows > 0) {
+											// output data of each row
+											while($hx_row = $hx_result->fetch_assoc()) {
+												echo "<br /><div class='w3-panel w3-black'>" . $hx_row['timestamp'] . " - " . $hx_row['user_id'] . "</div>";
+												echo $hx_row['comment'];
+											}
+										} else {
+											echo "0 results";
+										}
+										?>
 									</div>
 									<div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
 										<button onclick="document.getElementById('notes<?php echo $row['id']; ?>').style.display='none'" type="button" class="w3-button w3-green w3-left">Ok</button>

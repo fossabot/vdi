@@ -4,8 +4,7 @@ if(!isset($_COOKIE['vdiuser'])) { // if no cookie is set then go to the login pa
   header('Location: /vdi/login.php');
   exit;
 } else {  // if a cookie is set...
-  $cookie_check = $_COOKIE['vdiuser'];
-  $session_check
+  $ck_check = $_COOKIE['vdiuser'];
   //see if the cookie data is valid
   require 'sql-connect.php';
   $sql = "SELECT * FROM users WHERE session_key = '$ck_check' LIMIT 1";
