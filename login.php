@@ -1,6 +1,9 @@
 <?php
+session_start();
 if (isset($_GET['logout'])) {
-	setcookie('vdiuser', 0, 1);
+	setcookie('vdiuser', 0, 1,"/vdi/", "vremote.theparkys.net", 1, 1); //set the cookie so that it has expired
+	session_unset();
+  session_destroy();
 }
 
 if (isset($_POST['login'])) {
@@ -21,33 +24,37 @@ if (isset($_POST['login'])) {
 				$cookie_name = "vdiuser";
 				$cookie_value = GenerateRandomSequenceKey();
 				$cookie_expire = 0; // cookie expires when the browser closes
-				setcookie($cookie_name, $cookie_value, $cookie_expire);
+				setcookie($cookie_name, $cookie_value, $cookie_expire,"/vdi/", "vremote.theparkys.net", 1, 1);
 				// update user record with cookie value
 				$sql = "UPDATE users SET session_key = '$cookie_value' WHERE staff_number = '" . $_POST['usrname'] . "' LIMIT 1";
 
 				if ($conn->query($sql) === TRUE) {
-				    $last_id = $conn->insert_id;
+						//select user data to add to session variables
+						$sql = "SELECT * FROM users WHERE staff_number = '" . $_POST['usrname'] . "' LIMIT 1";
+						$result = $conn->query($sql);
+						if ($result->num_rows > 0) {
+							$row = mysqli_fetch_assoc($result);
+						}
+
+						$_SESSION['staff_number'] = $row['staff_number'];
+						$_SESSION['name'] = $row['forename'] . " " . $row['surname'];
+						$_SESSION['email'] = $row['email'];
+						$_SESSION['role'] = $row['user_role'];
+						$_SESSION['key'] = $cookie_value;
+
 						header('Location: /vdi/');
 				} else {
 				    echo "Error: " . $sql . "<br>" . $conn->error;
 					exit;
 				}
 			} else {
-				echo "Fail<br/>$password<br/>$pwhash";
+				// incorrect password
+				header('Location: login.php?error');
 			}
 		}
 	} else {
-		// state that username is not recognised
-		?>
-		<div>
-			<form action="login.php" method="post">
-				Sorry, we didn't recognise your staff number.<br />
-				Please fill out the form below to register.<br />
-				<input class="largebox" type="number" name="staff_id" value="<?php echo $_POST['staff_id']; ?>" pattern="[0-9] {8}" required>
-				<button class="btn default" type="submit" name="login">Create New User</button>
-			</form>
-		</div>
-		<?php
+		// incorrect username
+		header('Location: login.php?error');
 	}
 } else {
 	?>
@@ -71,13 +78,26 @@ if (isset($_POST['login'])) {
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	</head>
 		<body>
-			<!-- TEMPORARY ALERT -->
-			<div class="w3-panel w3-blue w3-display-container w3-top">
-				<span onclick="this.parentElement.style.display='none'" class="w3-button w3-blue w3-large w3-display-topright">&times;</span>
-				<h3>Password Information</h3>
-				<p>All passwords have been set to <b>1234</b></p>
-			</div>
-			<!-- TEMPORARY ALERT -->
+			<?php
+			if (isset($_GET['error'])) {
+				?>
+				<div class="w3-panel w3-red w3-display-container w3-top">
+					<span onclick="this.parentElement.style.display='none'" class="w3-button w3-red w3-large w3-display-topright">&times;</span>
+					<p>Your username or password is incorrect. Please try again.</p>
+				</div>
+				<?php
+			} else {
+				?>
+				<!-- TEMPORARY ALERT -->
+				<div class="w3-panel w3-blue w3-display-container w3-top">
+					<span onclick="this.parentElement.style.display='none'" class="w3-button w3-blue w3-large w3-display-topright">&times;</span>
+					<h3>Password Information</h3>
+					<p>All passwords have been set to <b>1234</b></p>
+				</div>
+				<!-- TEMPORARY ALERT -->
+				<?php
+			}
+			?>
 
 			<div class="w3-container w3-display-middle w3-mobile">
 

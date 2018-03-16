@@ -87,8 +87,6 @@
 								<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
 									<form class="w3-container" action="/action_page.php">
 										<div class="w3-section w3-margin">
-											<label><b>Updated By</b></label>
-											<input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter your staff number" name="staff_number" required>
 											<label><b>Details</b></label>
 											<textarea class="w3-input w3-border w3-margin-bottom" rows="10" name="comment" placeholder="Enter a note here..."></textarea>
 											<label><b>Vehicle Status</b></label>
