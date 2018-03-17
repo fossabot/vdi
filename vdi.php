@@ -99,26 +99,6 @@ if(isset($_GET['veh'])) {
 			}
 		};
 
-		//staff number validation script
-		$(document).ready(function() {
-
-			// check change event of the text field
-			$("#staff_id").keyup(function() {
-
-				// get text username text field value
-				var username = $("#staff_id").val();
-
-				// check username name only if length is equal to 8
-				if(username.length == 8) {
-					$("#status").html('<i class="fa fa-spinner"</i> Checking availability...');
-					// check username
-					$.post("functions/staff_id_check.php", {username: username}, function(data, status) {
-						$("#status").html(data);
-					});
-				}
-			});
-		});
-
 		//shrink menu on mobile devices script
 		function shrink_menu() {
 			var x = document.getElementById("small_bar");
@@ -150,8 +130,7 @@ if(isset($_GET['veh'])) {
 					<legend>Details</legend>
 					<div>
 						<input type="hidden" value="<?php echo $veh_id; ?>" name="veh_id">
-						<input class="w3-input" type="number" name="staff_id" id="staff_id" placeholder="Staff ID Number" pattern="[0-9] {8}" required>
-						<div id="status"></div>
+						<input type="hidden" name="staff_id" value="<?php echo $_SESSION['staff_number']; ?>">
 
 						<!-- create a datalist for typing in the vehicle location -->
 						<datalist id="locations">

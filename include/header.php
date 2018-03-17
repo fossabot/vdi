@@ -23,6 +23,7 @@
 				?>
 			</div>
 		</div>
+		<a class="w3-bar-item w3-mobile w3-hide-small">Logged in as <?php echo $_SESSION['staff_number'] . " - " . $_SESSION['name']; ?></a>
 		<a class="w3-bar-item w3-mobile w3-hide-small w3-button w3-right" href="mailto:chris.parkinson@eastamb.nhs.uk"><b>UNDER DEVELOPMENT</b> - Contact Chris with any problems or suggestions.</a>
 		<a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="shrink_menu()">&#9776;</a>
 	</div>

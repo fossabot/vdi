@@ -1,8 +1,8 @@
-<?php require 'include/login-check.php'; ?>
+<?php require 'login-check.php'; ?>
 <!DOCTYPE html>
 <html>
 <?php
-require 'include/sql-connect.php';
+require 'sql-connect.php';
 
 //get location id
 $sql = "SELECT id FROM location WHERE location='" . $_POST['veh_loc'] . "' LIMIT 1";
@@ -71,11 +71,11 @@ $sql = substr($sql, 0, -1); //remove the last ; from the SQL INSERT command.
 
 if (mysqli_multi_query($conn, $sql)) {
     //echo "New records created successfully";
-	?><script>alert('VDI successfully sent'); window.location.replace("index.php");</script><?php
+	?><script>alert('VDI successfully sent'); window.location.replace("../index.php");</script><?php
 } else {
     echo "Error: " . $sql . "<br>" . mysqli_error($conn);
 }
 
-require 'include/footer.php';
+require 'footer.php';
 ?>
 </html>

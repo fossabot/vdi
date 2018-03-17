@@ -25,9 +25,6 @@ check_auth(4);
   <?php include 'include/header.php'; ?>
   <div class="w3-container">
     <?php
-    echo "<b>ERROR REPORTING</b><br /><br />";
-    echo error_level_tostring(error_reporting(), ',');
-    echo "<br /><br />";
     echo "<b>SESSION</b><br /><br />";
     print_r($_SESSION);
     echo "<br /><br />";
