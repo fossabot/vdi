@@ -1,4 +1,8 @@
-<?php require 'include/login-check.php'; ?>
+<?php
+require 'include/login-check.php';
+require 'functions/functions.php';
+check_auth(3);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,8 +23,8 @@
 </head>
 	<body>
 		<?php
-		require 'include/sql-connect.php';
 		require 'include/header.php';
+		require 'include/sql-connect.php';
 		$count = 1;
 		?>
 		<div class="w3-container">

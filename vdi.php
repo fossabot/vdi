@@ -1,4 +1,8 @@
-<?php require 'include/login-check.php'; ?>
+<?php
+require 'include/login-check.php';
+require 'functions/functions.php';
+check_auth(1);
+?>
 <!DOCTYPE html>
 <?php
 require 'include/sql-connect.php';

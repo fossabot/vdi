@@ -11,6 +11,14 @@ if(!isset($_COOKIE['vdiuser'])) { // if no cookie is set then go to the login pa
   $result = $conn->query($sql);
 
   if ($result->num_rows > 0) {
+    //check if session exists
+    if (!isset($_SESSION['key'])) {
+      header('Location: /vdi/login.php');
+      exit;
+    } else {
+      // continue with page
+    }
+
     // reset one time hash
     // set the user cookie
     /*require '/vdi/include/ppp.php';

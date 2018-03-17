@@ -1,5 +1,12 @@
 <?php
 
+function check_auth($level) { //check if a user's authorisation level will let them view a specific page
+  if ($_SESSION['role'] < $level) {
+    echo "You don't have the correct access permissions for this page. Please contact an administrator.";
+    exit;
+  }
+}
+
 function sec_session_start() {
     $session_name = 'sec_session_id';   // Set a custom session name
     $secure = SECURE;

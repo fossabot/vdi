@@ -6,8 +6,11 @@
 			<button class="w3-button w3-green">Menu</button>
 			<div class="w3-dropdown-content w3-bar-block w3-card-4">
 				<?php
-				//list all outstanding reports
-				$sql = "SELECT * FROM menu WHERE user_role > '0' ORDER BY id";
+				//get user role
+				$role = $_SESSION['role'] + 1;
+
+				//list all menu items for user role
+				$sql = "SELECT * FROM menu WHERE (user_role > 0 AND user_role < $role) ORDER BY id";
 				$result = $conn->query($sql);
 
 				if ($result->num_rows > 0) {
@@ -16,6 +19,7 @@
 						echo "<a href='" . $row['link'] . "' class='w3-bar-item w3-button'>" . $row['name'] . "</a>";
 					}
 				}
+				$conn->close();
 				?>
 			</div>
 		</div>
