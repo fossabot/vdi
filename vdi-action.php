@@ -84,8 +84,8 @@ check_auth(3);
 								<td><?php echo $row['comments']; ?></td>
 								<td><?php echo $row_log['timestamp']; ?></td>
 								<td><?php echo $row_log['staff_id']; ?></td>
-								<td><button onclick="document.getElementById('id<?php echo $row['id']; ?>').style.display='block'" class="w3-button w3-green">Update</button></td>
 								<td><button onclick="document.getElementById('notes<?php echo $row['id']; ?>').style.display='block'" class="w3-button w3-green">View</button></td>
+								<td><button onclick="document.getElementById('id<?php echo $row['id']; ?>').style.display='block'" class="w3-button w3-green">Update</button></td>
 							</tr>
 							<div id="id<?php echo $row['id']; ?>" class="w3-modal">
 								<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
@@ -130,7 +130,7 @@ check_auth(3);
 												echo $hx_row['comment'];
 											}
 										} else {
-											echo "0 results";
+											echo "No comments recorded";
 										}
 										?>
 									</div>
