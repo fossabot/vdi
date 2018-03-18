@@ -83,7 +83,7 @@ $count = 1;
 						<table class="w3-table">
 							<?php
 							//select any live notes associated with this vehicle
-							$sql_b = "SELECT timestamp,note FROM vehicle_notes WHERE vehicle_id = '" . $row['id'] . "' AND expired = '0' ORDER BY timestamp";
+							$sql_b = "SELECT * FROM vehicle_notes WHERE vehicle_id = '" . $row['id'] . "' AND expired = '0' ORDER BY timestamp DESC";
 							$result_b = $conn->query($sql_b);
 
 							if ($result_b->num_rows > 0) {
@@ -92,7 +92,7 @@ $count = 1;
 									echo "<tr><td colspan='4' style='color:red'>" . date('d/m/y H:i', strtotime($row_b['timestamp'])) . "<br />" . $row_b['note'] . "</td></tr>";
 									//allow authorised users to close notes on a vehicle
 									if ($_SESSION['role'] >= 3) {
-										?><tr><td><button onclick="location.href='/vdi/include/submit-index-comment.php?delnote=<?php echo $row["id"]; ?>'" class="w3-button w3-pale-blue">Remove Note</button></tr></td><?php
+										?><tr><td colspan="4"><button onclick="location.href='/vdi/include/submit-index-comment.php?delnote=<?php echo $row_b["id"]; ?>&veh=<?php echo $row["id"]; ?>'" class="w3-button w3-pale-blue">Remove Note</button></tr></td><?php
 									}
 								}
 							}

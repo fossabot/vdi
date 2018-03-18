@@ -34,9 +34,10 @@ if (isset($_GET['row'])) {
   }
 } elseif (isset($_GET['delnote'])) { //section to hide the note from the vehicle screen
   require 'sql-connect.php';
-  $vehicle_id = $_GET['delnote'];
+  $vehicle_id = $_GET['veh'];
+  $note_id = $_GET['delnote'];
 
-  $sql = "UPDATE vehicle_notes SET expired = 1 WHERE (vehicle_id = '$vehicle_id' AND expired = 0)";
+  $sql = "UPDATE vehicle_notes SET expired = 1 WHERE id = $note_id";
   if ($conn->query($sql) === TRUE) {
       $last_id = $conn->insert_id;
   } else {

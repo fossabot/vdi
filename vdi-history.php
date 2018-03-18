@@ -1,7 +1,7 @@
 <?php
 require 'include/login-check.php';
 require 'functions/functions.php';
-check_auth(3);
+check_auth(2);
 ?>
 <!DOCTYPE html>
 <?php require 'include/sql-connect.php'; ?>
