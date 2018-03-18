@@ -45,7 +45,7 @@ check_auth(3);
 							?>
 							<button onclick="expandsection('vdi-data-<?php echo $row_v['id']; ?>')" class="w3-btn w3-block w3-grey w3-left-align"><?php echo $row_v['timestamp']; ?></button>
 							<div id="vdi-data-<?php echo $row_v['id']; ?>" class="w3-container w3-hide">
-								<table class="w3-table-all w3-hoverable w3-responsive"'>
+								<table class="w3-table-all w3-hoverable w3-responsive">
 									<tr><th>Inspection Criteria</th><th>Check</th><th>Comments</th></tr>
 								<?php
 								//get vdi data

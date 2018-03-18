@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <?php
+session_start();
 require '../include/sql-connect.php';
 $count = 1;
 ?>
@@ -57,9 +58,21 @@ $count = 1;
 					?>
 					<div class="w3-cell w3-mobile">
 					<fieldset>
-						<legend><button onclick="location.href='vdi.php?veh=<?php echo base64_encode($row["id"] . "-" . time()); ?>';" id="<?php echo $row["id"]; ?>" class="w3-button <?php echo $button; ?>"><?php echo $row["callsign"] . " - " . $row["registration"]; ?></button></legend>						
+						<legend>
+							<button onclick="location.href='vdi.php?veh=<?php echo base64_encode($row["id"] . "-" . time()); ?>';" id="<?php echo $row["id"]; ?>" class="w3-button <?php echo $button; ?>"><?php echo $row["callsign"] . " - " . $row["registration"]; ?></button>
+							<?php
+							//add a VDI history button if supervisor or above
+							if ($_SESSION['role'] >= 2) {
+								?><button onclick="location.href='vdi-history.php?veh=<?php echo $row["id"]; ?>'" class="w3-button w3-blue">VDI History</button><?php
+							}
+							?>
+						</legend>
 						<table class="w3-table">
 							<?php
+							//allow authorised users to add a comment to the vehicle screen
+							if ($_SESSION['role'] >= 3) {
+								?><button onclick="document.getElementById('comment<?php echo $row['id']; ?>').style.display='block'; clearTimeout(timer);" class="w3-button w3-blue">Add Note</button><?php
+							}
 							//select any live notes associated with this vehicle
 							$sql_b = "SELECT timestamp,note FROM vehicle_notes WHERE vehicle_id = '" . $row['id'] . "' AND expired = '0' ORDER BY timestamp";
 							$result_b = $conn->query($sql_b);
@@ -67,7 +80,11 @@ $count = 1;
 							if ($result_b->num_rows > 0) {
 								// output data of each row
 								while($row_b = $result_b->fetch_assoc()) {
-									echo "<tr><td colspan='4' style='color:red'>" . date('d/m/y H:i', strtotime($row_b['timestamp'])) . "<br />" . $row_b['note'] . "<hr></td></tr>";
+									echo "<tr><td colspan='4' style='color:red'>" . date('d/m/y H:i', strtotime($row_b['timestamp'])) . "<br />" . $row_b['note'] . "</td></tr>";
+									//allow authorised users to close notes on a vehicle
+									if ($_SESSION['role'] >= 3) {
+										?><tr><td><button onclick="location.href='/vdi/include/submit-index-comment.php?delnote=<?php echo $row["id"]; ?>'" class="w3-button w3-pale-blue">Remove Note</button></tr></td><?php
+									}
 								}
 							}
 							?>
@@ -86,6 +103,28 @@ $count = 1;
 							</tr>
 						</table>
 					</fieldset>
+					<div id="comment<?php echo $row['id']; ?>" class="w3-modal">
+						<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
+							<form method="post" class="w3-container" name="form_comment<?php echo $row['id']; ?>" action="include/submit-index-comment.php?row=<?php echo $row['id']; ?>">
+								<div class="w3-section w3-margin">
+									<label><b>Note</b></label>
+									<textarea class="w3-input w3-border w3-margin-bottom" rows="4" name="comment<?php echo $row['id']; ?>" placeholder="Enter a note here..." required></textarea>
+									<label><b>Vehicle Status</b></label>
+									<select class="w3-select" name="status<?php echo $row['id']; ?>" required>
+										<option value="" disabled selected>Choose an status</option>
+										<option value="2">Off The Road</option>
+										<option value="1">Advisory Note</option>
+										<option value="0">On The Road</option>
+									</select>
+								</div>
+								<div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
+									<button class="w3-button w3-green w3-left" type="submit">Update</button>
+									<button onclick="document.getElementById('comment<?php echo $row['id']; ?>').style.display='none'" type="button" class="w3-button w3-red w3-right">Cancel</button>
+								</div>
+							</form>
+
+						</div>
+					</div>
 					</div>
 					<?php
 					//create rows of 3
