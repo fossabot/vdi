@@ -63,16 +63,25 @@ $count = 1;
 							<?php
 							//add a VDI history button if supervisor or above
 							if ($_SESSION['role'] >= 2) {
-								?><button onclick="location.href='vdi-history.php?veh=<?php echo $row["id"]; ?>'" class="w3-button w3-blue">VDI History</button><?php
+								?>
+								<div class="w3-dropdown-hover">
+									<button class="w3-button w3-blue">Vehicle Sub-Menu</button>
+									<div class="w3-dropdown-content w3-bar-block w3-card-4">
+										<a href='vdi-history.php?veh=<?php echo $row["id"]; ?>' class='w3-bar-item w3-button'>VDI History</a>
+										<?php
+										//allow authorised users to add a comment to the vehicle screen
+										if ($_SESSION['role'] >= 3) {
+											?><a onclick="document.getElementById('comment<?php echo $row['id']; ?>').style.display='block'; clearTimeout(timer);" class="w3-bar-item w3-button">Add Note</a><?php
+										}
+										?>
+									</div>
+								</div>
+								<?php
 							}
 							?>
 						</legend>
 						<table class="w3-table">
 							<?php
-							//allow authorised users to add a comment to the vehicle screen
-							if ($_SESSION['role'] >= 3) {
-								?><button onclick="document.getElementById('comment<?php echo $row['id']; ?>').style.display='block'; clearTimeout(timer);" class="w3-button w3-blue">Add Note</button><?php
-							}
 							//select any live notes associated with this vehicle
 							$sql_b = "SELECT timestamp,note FROM vehicle_notes WHERE vehicle_id = '" . $row['id'] . "' AND expired = '0' ORDER BY timestamp";
 							$result_b = $conn->query($sql_b);
@@ -141,6 +150,3 @@ $count = 1;
 		</div>
 	</fieldset>
 </div>
-<?php
-require 'include/footer.php';
-?>
