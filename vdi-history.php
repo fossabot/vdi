@@ -101,10 +101,10 @@ check_auth(2);
 						//create table cells
 						if ($vsplit[0] == 0) {
 							//add a button to display further information regarding the criteria failure
-							?><td onclick="document.getElementById('info<?php echo $vsplit[1]; ?>').style.display='block'" class='w3-pale-red w3-center w3-button'><i class='fa fa-close'></i></td><?php
+							?><td onclick="document.getElementById('info<?php echo $vsplit[1]; ?>').style.display='block'" class='w3-pale-red w3-center w3-button'><i class='fas fa-times'></i></td><?php
 							array_push($info,$vsplit[1]);
 						} elseif ($vsplit[0] == 1) {
-							echo "<td class='w3-pale-green w3-center'><i class='fa fa-check'></i></td>";
+							echo "<td class='w3-pale-green w3-center'><i class='fas fa-check'></i></td>";
 						}
 					}
 					?>
