@@ -16,7 +16,7 @@
 				$role_txt = $row['user_role'];
 
 				//list all menu items for user role
-				$sql = "SELECT * FROM menu WHERE (user_role > 0 AND user_role < $role) ORDER BY id";
+				$sql = "SELECT * FROM menu WHERE (user_role > 0 AND user_role < $role) ORDER BY name";
 				$result = $conn->query($sql);
 
 				if ($result->num_rows > 0) {
