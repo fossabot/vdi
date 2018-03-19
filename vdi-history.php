@@ -68,10 +68,12 @@ check_auth(2);
 					}
 				} else {
 					echo "Error: No VDI detail associated with vdi_log " . $row_log['id'];
+					exit;
 				}
 			}
 		} else {
-			echo "<div class='w3-panel w3-red'>No VDI data for this vehicle</div>";
+			echo "<div class='w3-panel w3-red w3-center'><h2>No VDI data for this vehicle</h2></div>";
+			exit;
 		}
 		$info = array();
 		//get vehicle details
@@ -93,7 +95,7 @@ check_auth(2);
 					//split user details from timestamp of VDI
 					$heading = explode("!", $value);
 					$date = date('d/m/y H:i', strtotime($heading[0]));
-					echo "<th class='w3-center w3-tooltip'>$date<span style='position:absolute;left:0;bottom:-20px' class='w3-text w3-tag'>Inspected by " . $heading[1] . " " . $heading[2] . "</span></th>";
+					echo "<th class='w3-center w3-tooltip'>$date<span style='position:absolute;left:0;bottom:-30px' class='w3-text w3-tag'>Inspected by " . $heading[1] . " " . $heading[2] . "</span></th>";
 				}
 				?>
 			</tr>
