@@ -3,6 +3,7 @@
 session_start();
 require '../include/sql-connect.php';
 $count = 1;
+$q = $_GET['q']; //gets the live search information
 ?>
 <div class="w3-container">
 	Last refreshed on <?php echo date('D d M Y H:i:s', time()); ?>
@@ -10,7 +11,15 @@ $count = 1;
 		<legend>Vehicle Board</legend>
 		<div class="w3-container">
 			<?php
-			$sql = "SELECT * FROM vehicle_list ORDER BY callsign";
+			if ($q === "all") {
+				$sql = "SELECT * FROM vehicle_list ORDER BY callsign";
+			} elseif (strlen($q) > 0) {
+				$sql = "SELECT * FROM vehicle_list WHERE callsign LIKE '%$q%' ORDER BY callsign";
+			} else {
+				echo "Error: Live data not available";
+				exit;
+			}
+
 			$result = $conn->query($sql);
 
 			if ($result->num_rows > 0) {
