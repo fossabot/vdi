@@ -26,11 +26,11 @@ $q = $_GET['q']; //gets the live search information
 				// output data of each row
 				while($row = $result->fetch_assoc()) {
 					//format button colour based on vehicle status
-					if ($row['veh_status'] == 0) {
+					if ($row['veh_status'] == 1) {
 						$button = "w3-green";
-					} elseif ($row['veh_status'] == 1) {
-						$button = "w3-orange";
 					} elseif ($row['veh_status'] == 2) {
+						$button = "w3-orange";
+					} elseif ($row['veh_status'] == 3) {
 						$button = "w3-red";
 					}
 					//set vehicle use and get vehicle type
@@ -130,9 +130,14 @@ $q = $_GET['q']; //gets the live search information
 									<label><b>Vehicle Status</b></label>
 									<select class="w3-select" name="status<?php echo $row['id']; ?>" required>
 										<option value="" disabled selected>Choose an status</option>
-										<option value="2">Off The Road</option>
-										<option value="1">Advisory Note</option>
-										<option value="0">On The Road</option>
+										<?php
+										//get status options from db
+										$sql_status = "SELECT * FROM vehicle_status";
+										$result_status = $conn->query($sql_status);
+										while($row_status = mysqli_fetch_assoc($result_status)) {
+											echo "<option value='" . $row_status['id'] . "'>" . $row_status['vehicle_status'] . "</option>";
+										}
+										?>
 									</select>
 								</div>
 								<div class="w3-container w3-border-top w3-padding-16 w3-light-grey">

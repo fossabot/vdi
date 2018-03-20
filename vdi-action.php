@@ -83,9 +83,14 @@ check_auth(3);
 											<label><b>Vehicle Status</b></label>
 											<select class="w3-select" name="status<?php echo $row['id']; ?>" required>
 												<option value="" disabled selected>Choose an status</option>
-												<option value="2">Off The Road</option>
-												<option value="1">Advisory Note</option>
-												<option value="0">On The Road</option>
+												<?php
+												//get status options from db
+												$sql_status = "SELECT * FROM vehicle_status";
+												$result_status = $conn->query($sql_status);
+												while($row_status = mysqli_fetch_assoc($result_status)) {
+													echo "<option value='" . $row_status['id'] . "'>" . $row_status['vehicle_status'] . "</option>";
+												}
+												?>
 											</select>
 											<label><b>Outcome</b></label>
 											<select class="w3-select" name="outcome<?php echo $row['id']; ?>" required>

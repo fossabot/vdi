@@ -38,11 +38,11 @@ if(isset($_GET['veh'])) {
 			$unix_month = 60*60*24*30;
 
 			//format menu colour based on vehicle status
-			if ($row['veh_status'] == 0) {
+			if ($row['veh_status'] == 1) {
 				$color = "w3-green";
-			} elseif ($row['veh_status'] == 1) {
-				$color = "w3-orange";
 			} elseif ($row['veh_status'] == 2) {
+				$color = "w3-orange";
+			} elseif ($row['veh_status'] == 3) {
 				$color = "w3-red";
 			}
 
