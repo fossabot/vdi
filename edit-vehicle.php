@@ -38,7 +38,6 @@ check_auth(3); // 1 = all users, 2 = supervisor, 3 = DLO & 4 = admin
       //put vehicle types into x-editable array
       $sql = "SELECT * FROM vehicle_types";
       $result = $conn->query($sql);
-
       while($row = $result->fetch_assoc()) {
         if (!isset($types)) {
           $types = "{value: ".$row['id'].", text: '".$row['vehicle_type']."'}";
@@ -51,7 +50,6 @@ check_auth(3); // 1 = all users, 2 = supervisor, 3 = DLO & 4 = admin
       //put status' into x-editable array
       $sql = "SELECT * FROM vehicle_status";
       $result = $conn->query($sql);
-
       while($row = $result->fetch_assoc()) {
         if (!isset($veh_status)) {
           $veh_status = "{value: ".$row['id'].", text: '".$row['vehicle_status']."'}";
@@ -62,30 +60,21 @@ check_auth(3); // 1 = all users, 2 = supervisor, 3 = DLO & 4 = admin
       $veh_status = "[".$veh_status."]";
 
       //select all vehicles
-			$sql = "SELECT * FROM vehicle_list ORDER BY callsign";
+      $sqla = "SELECT vehicle_list.id, vehicle_list.callsign, vehicle_types.vehicle_type, vehicle_list.registration, IF(vehicle_list.mot = 0,NULL,FROM_UNIXTIME(vehicle_list.mot, '%d/%m/%Y')) AS mot, IF(vehicle_list.service = 0,NULL,FROM_UNIXTIME(vehicle_list.service, '%d/%m/%Y')) AS service,";
+      $sqlb = "vehicle_status.vehicle_status, vehicle_list.issi_hh1, vehicle_list.issi_hh2, vehicle_list.issi_veh FROM vehicle_list";
+      $sqlc = "LEFT JOIN vehicle_types ON vehicle_list.vehicle_type = vehicle_types.id LEFT JOIN vehicle_status ON vehicle_list.veh_status = vehicle_status.id ORDER BY callsign ASC";
+      $sql = "$sqla $sqlb $sqlc";
       $result = $conn->query($sql);
 
 			if ($result->num_rows > 0) {
 				while($row = $result->fetch_assoc()) {
-          if ($row['mot'] != 0 ) { $date_mot = date('d/m/Y', $row['mot']); } else { $date_mot = NULL; } //format MOT date correctly
-          if ($row['service'] != 0 ) { $date_svc = date('d/m/Y', $row['service']); } else { $date_svc = NULL; } //format service date correctly
-
-          //get vehicle type from db
-          $veh_sql = "SELECT vehicle_type FROM vehicle_types WHERE id = " . $row['vehicle_type'];
-          $veh_result = $conn->query($veh_sql);
-          $veh_type = $veh_result->fetch_assoc();
-
-          //get status from db
-          $status_sql = "SELECT vehicle_status FROM vehicle_status WHERE id = " . $row['veh_status'];
-          $status_result = $conn->query($status_sql);
-          $status_type = $status_result->fetch_assoc();
 					echo'<tr>
                 <td class="xedit" data-type="text" data-clear="1" data-pk="'.$row['id'].'" data-name="callsign">'.$row['callsign'].'</td>
-  							<td class="xedit" data-type="select" data-source="'.$types.'" data-pk="'.$row['id'].'" data-name="vehicle_type">'.$veh_type['vehicle_type'].'</td>
+  							<td class="xedit" data-type="select" data-source="'.$types.'" data-pk="'.$row['id'].'" data-name="vehicle_type">'.$row['vehicle_type'].'</td>
   							<td class="xedit" data-type="text" data-clear="1" data-pk="'.$row['id'].'" data-name="registration">'.$row['registration'].'</td>
-                <td class="xedit" data-type="date" data-clear="1" data-pk="'.$row['id'].'" data-name="mot" data-format="dd-mm-yyyy" data-viewformat="dd/mm/yyyy">'.$date_mot.'</td>
-                <td class="xedit" data-type="date" data-clear="1" data-pk="'.$row['id'].'" data-name="service" data-format="dd-mm-yyyy" data-viewformat="dd/mm/yyyy">'.$date_svc.'</td>
-                <td class="xedit" data-type="select" data-source="'.$veh_status.'" data-pk="'.$row['id'].'" data-name="veh_status">'.$status_type['vehicle_status'].'</td>
+                <td class="xedit" data-type="date" data-clear="1" data-pk="'.$row['id'].'" data-name="mot" data-format="dd-mm-yyyy" data-viewformat="dd/mm/yyyy">'.$row['mot'].'</td>
+                <td class="xedit" data-type="date" data-clear="1" data-pk="'.$row['id'].'" data-name="service" data-format="dd-mm-yyyy" data-viewformat="dd/mm/yyyy">'.$row['service'].'</td>
+                <td class="xedit" data-type="select" data-source="'.$veh_status.'" data-pk="'.$row['id'].'" data-name="veh_status">'.$row['vehicle_status'].'</td>
                 <td class="xedit" data-type="text" data-clear="1" data-pk="'.$row['id'].'" data-name="issi_hh1">'.$row['issi_hh1'].'</td>
                 <td class="xedit" data-type="text" data-clear="1" data-pk="'.$row['id'].'" data-name="issi_hh2">'.$row['issi_hh2'].'</td>
                 <td class="xedit" data-type="text" data-clear="1" data-pk="'.$row['id'].'" data-name="issi_veh">'.$row['issi_veh'].'</td>
@@ -148,27 +137,6 @@ check_auth(3); // 1 = all users, 2 = supervisor, 3 = DLO & 4 = admin
         }
         });
       });
-
-      /*$(document).on('click','.editable-submit',function(){
-      var key = $(this).closest('.editable-container').prev().attr('key');
-      var x = $(this).closest('.editable-container').prev().attr('id');
-      var y = $('.input-sm').val();
-      var z = $(this).closest('.editable-container').prev().text(y);
-
-      $.ajax({
-        url: "process.php?id="+x+"&data="+y+'&key='+key,
-        type: 'GET',
-        success: function(s){
-        	if(s == 'status'){
-          	$(z).html(y);}
-        	if(s == 'error') {
-          	alert('Error Processing your Request!');}
-        },
-        error: function(e){
-        	alert('Error Processing your Request!!');
-        }
-      });
-    });*/
     });
 </script>
 </body>
