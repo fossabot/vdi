@@ -21,7 +21,10 @@ check_auth(3);
 				<div class="w3-container">
 					<?php
 					//list all outstanding reports
-					$sql = "SELECT *, vdi_log_detail.id as id, inspection_points.id as ipid  FROM vdi_log_detail INNER JOIN inspection_points ON vdi_log_detail.inspection_point_id = inspection_points.id WHERE report = '0' AND action_closed = '0' ORDER BY vdi_log_detail.id";
+					$sqla = "SELECT vdi_log_detail.id, vdi_log_detail.comments, inspection_points.criteria, inspection_points.section, vdi_log.timestamp, vehicle_list.callsign, vehicle_list.registration, location.location, CONCAT(users.forename, ' ', users.surname) AS name, users.email, vehicle_types.vehicle_type FROM vdi_log_detail ";
+					$sqlb = "LEFT JOIN inspection_points ON vdi_log_detail.inspection_point_id = inspection_points.id LEFT JOIN vdi_log ON vdi_log_detail.vdi_log_id = vdi_log.id LEFT JOIN vehicle_list ON vdi_log.vehicle_list_id = vehicle_list.id LEFT JOIN location ON vdi_log.location_id = location.id LEFT JOIN users ON vdi_log.staff_id = users.staff_number LEFT JOIN vehicle_types ON vehicle_list.vehicle_type = vehicle_types.id ";
+					$sqlc = "WHERE report = '0' AND action_closed = '0' ORDER BY vdi_log_detail.id";
+					$sql = $sqla.$sqlb.$sqlc;
 					$result = $conn->query($sql);
 
 					if ($result->num_rows > 0) {
@@ -46,37 +49,19 @@ check_auth(3);
 							} else {
 								$w3 = NULL;
 							}
-							//get information from vdi_log relating to this report
-							$sql_log = "SELECT * FROM vdi_log INNER JOIN vehicle_list ON vdi_log.vehicle_list_id = vehicle_list.id WHERE vdi_log.id = '" . $row['vdi_log_id'] . "' LIMIT 1";
-							$result_log = $conn->query($sql_log);
-							if ($result_log->num_rows > 0) {
-								$row_log = mysqli_fetch_assoc($result_log);
-							}
-							//get location name
-							$sql_loc = "SELECT location FROM location WHERE id = '" . $row_log['location_id'] . "' LIMIT 1";
-							$result_loc = $conn->query($sql_loc);
-							if ($result_loc->num_rows > 0) {
-								$row_loc = mysqli_fetch_assoc($result_loc);
-							}
-							//get vehicle type
-							$sql_type = "SELECT vehicle_type FROM vehicle_types WHERE id = '" . $row_log['vehicle_type'] . "' LIMIT 1";
-							$result_type = $conn->query($sql_type);
-							if ($result_type->num_rows > 0) {
-								$row_type = mysqli_fetch_assoc($result_type);
-							}
 							?>
 							<tr <?php echo $w3; ?>>
-								<td><button onclick="document.getElementById('veh<?php echo $row['id']; ?>').style.display='block'" class="w3-button"><?php echo $row_log['callsign']; ?></button></td>
+								<td><button onclick="document.getElementById('veh<?php echo $row['id']; ?>').style.display='block'" class="w3-button"><?php echo $row['callsign']; ?></button></td>
 								<td><?php echo $row['criteria']; ?></td>
 								<td><?php echo $row['comments']; ?></td>
-								<td><?php echo $row_log['timestamp']; ?></td>
-								<td><?php echo $row_log['staff_id']; ?></td>
+								<td><?php echo $row['timestamp']; ?></td>
+								<td><?php echo $row['name']; ?></a></td>
 								<td><button onclick="document.getElementById('notes<?php echo $row['id']; ?>').style.display='block'" class="w3-button w3-green">View</button></td>
 								<td><button onclick="document.getElementById('id<?php echo $row['id']; ?>').style.display='block'" class="w3-button w3-green">Update</button></td>
 							</tr>
 							<div id="id<?php echo $row['id']; ?>" class="w3-modal">
 								<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
-									<form method="post" class="w3-container" name="form_comment<?php echo $row['id']; ?>" action="include/submit-update.php?row=<?php echo $row['id']; ?>&veh=<?php echo $row_log['callsign']; ?>">
+									<form method="post" class="w3-container" name="form_comment<?php echo $row['id']; ?>" action="include/submit-update.php?row=<?php echo $row['id']; ?>&veh=<?php echo $row['callsign']; ?>">
 										<div class="w3-section w3-margin">
 											<label><b>Details</b></label>
 											<textarea class="w3-input w3-border w3-margin-bottom" rows="10" name="comment<?php echo $row['id']; ?>" placeholder="Enter a note here..." required></textarea>
@@ -134,11 +119,11 @@ check_auth(3);
 							<div id="veh<?php echo $row['id']; ?>" class="w3-modal">
 								<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:400px">
 									<header class="w3-container w3-green">
-										<h2><?php echo $row_log['callsign']; ?> - <?php echo $row_log['registration']; ?></h2>
+										<h2><?php echo $row['callsign']; ?> - <?php echo $row['registration']; ?></h2>
 									</header>
 									<div class="w3-section w3-margin">
-										<?php echo $row_type['vehicle_type']; ?><br /><br />
-										At the time of reporting, this vehicle was at <b><?php echo $row_loc['location']; ?></b><br />
+										<?php echo $row['vehicle_type']; ?><br /><br />
+										At the time of reporting, this vehicle was at <b><?php echo $row['location']; ?></b><br />
 									</div>
 									<div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
 										<button onclick="document.getElementById('veh<?php echo $row['id']; ?>').style.display='none'" type="button" class="w3-button w3-green w3-left">Ok</button>
