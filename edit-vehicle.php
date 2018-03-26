@@ -21,6 +21,7 @@ check_auth(3); // 1 = all users, 2 = supervisor, 3 = DLO & 4 = admin
   require 'include/header.php';
   require 'include/sql-connect.php';
   ?>
+  <br /><br />
   <div class="w3-container">
     <table class="w3-table-all w3-hoverable">
       <tr>
