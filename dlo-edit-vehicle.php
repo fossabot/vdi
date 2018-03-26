@@ -1,7 +1,7 @@
 <?php
 require 'include/login-check.php';
 require 'functions/functions.php';
-check_auth(4); // 1 = all users, 2 = supervisor, 3 = DLO & 4 = admin
+check_auth(3); // 1 = all users, 2 = supervisor, 3 = DLO & 4 = admin
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,6 +24,7 @@ check_auth(4); // 1 = all users, 2 = supervisor, 3 = DLO & 4 = admin
   <br /><br />
   <div class="w3-container">
     <table class="w3-table-all w3-hoverable">
+      <tr><th colspan="3"></th><th class="w3-center w3-blue" colspan="3">Editable Fields</th><th colspan="3"></th></tr>
       <tr>
         <th>Callsign</th>
         <th>Vehicle Type</th>
@@ -70,15 +71,15 @@ check_auth(4); // 1 = all users, 2 = supervisor, 3 = DLO & 4 = admin
 			if ($result->num_rows > 0) {
 				while($row = $result->fetch_assoc()) {
 					echo'<tr>
-                <td class="xedit" data-type="text" data-clear="1" data-pk="'.$row['id'].'" data-name="callsign">'.$row['callsign'].'</td>
-  							<td class="xedit" data-type="select" data-source="'.$types.'" data-pk="'.$row['id'].'" data-name="vehicle_type">'.$row['vehicle_type'].'</td>
-  							<td class="xedit" data-type="text" data-clear="1" data-pk="'.$row['id'].'" data-name="registration">'.$row['registration'].'</td>
+                <td>'.$row['callsign'].'</td>
+  							<td>'.$row['vehicle_type'].'</td>
+  							<td>'.$row['registration'].'</td>
                 <td class="xedit" data-type="date" data-clear="1" data-pk="'.$row['id'].'" data-name="mot" data-format="dd-mm-yyyy" data-viewformat="dd/mm/yyyy">'.$row['mot'].'</td>
                 <td class="xedit" data-type="date" data-clear="1" data-pk="'.$row['id'].'" data-name="service" data-format="dd-mm-yyyy" data-viewformat="dd/mm/yyyy">'.$row['service'].'</td>
                 <td class="xedit" data-type="select" data-source="'.$veh_status.'" data-pk="'.$row['id'].'" data-name="veh_status">'.$row['vehicle_status'].'</td>
-                <td class="xedit" data-type="text" data-clear="1" data-pk="'.$row['id'].'" data-name="issi_hh1">'.$row['issi_hh1'].'</td>
-                <td class="xedit" data-type="text" data-clear="1" data-pk="'.$row['id'].'" data-name="issi_hh2">'.$row['issi_hh2'].'</td>
-                <td class="xedit" data-type="text" data-clear="1" data-pk="'.$row['id'].'" data-name="issi_veh">'.$row['issi_veh'].'</td>
+                <td>'.$row['issi_hh1'].'</td>
+                <td>'.$row['issi_hh2'].'</td>
+                <td>'.$row['issi_veh'].'</td>
               </tr>';
 			    }
         }
