@@ -1,1 +1,2 @@
 include/sql-connect.php
+sql-db/.htaccess
