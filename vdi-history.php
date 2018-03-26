@@ -77,7 +77,7 @@ check_auth(2);
 				<th><?php echo "VDI History for " . $veh['callsign'] . " - " . $veh['registration']; ?></th>
 				<?php
 				$data = explode(",", $table[0]);
-				$staff = explode(",", $table['staff']);
+
 				foreach ($data as $value) {
 					//split user details from timestamp of VDI
 					$heading = explode("!", $value);
