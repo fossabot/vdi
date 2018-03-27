@@ -24,6 +24,7 @@ check_auth(4); // 1 = all users, 2 = supervisor, 3 = DLO & 4 = admin
   <br />
   <div class="w3-container">
     Deleted (hidden) vehicles are highlighted in orange at the bottom of the page. Currently only hidden or unhidden by manual edit in phpMyAdmin.
+  </div>
   <div class="w3-container">
     <table class="w3-table-all w3-hoverable">
       <tr>
