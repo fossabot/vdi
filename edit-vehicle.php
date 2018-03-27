@@ -21,7 +21,9 @@ check_auth(4); // 1 = all users, 2 = supervisor, 3 = DLO & 4 = admin
   require 'include/header.php';
   require 'include/sql-connect.php';
   ?>
-  <br /><br />
+  <br />
+  <div class="w3-container">
+    Deleted (hidden) vehicles are highlighted in orange at the bottom of the page. Currently only hidden or unhidden by manual edit in phpMyAdmin.
   <div class="w3-container">
     <table class="w3-table-all w3-hoverable">
       <tr>
@@ -62,14 +64,19 @@ check_auth(4); // 1 = all users, 2 = supervisor, 3 = DLO & 4 = admin
 
       //select all vehicles
       $sqla = "SELECT vehicle_list.id, vehicle_list.callsign, vehicle_types.vehicle_type, vehicle_list.registration, IF(vehicle_list.mot = 0,NULL,FROM_UNIXTIME(vehicle_list.mot, '%d/%m/%Y')) AS mot, IF(vehicle_list.service = 0,NULL,FROM_UNIXTIME(vehicle_list.service, '%d/%m/%Y')) AS service,";
-      $sqlb = "vehicle_status.vehicle_status, vehicle_list.issi_hh1, vehicle_list.issi_hh2, vehicle_list.issi_veh FROM vehicle_list";
-      $sqlc = "LEFT JOIN vehicle_types ON vehicle_list.vehicle_type = vehicle_types.id LEFT JOIN vehicle_status ON vehicle_list.veh_status = vehicle_status.id ORDER BY callsign ASC";
+      $sqlb = "vehicle_status.vehicle_status, vehicle_list.issi_hh1, vehicle_list.issi_hh2, vehicle_list.issi_veh, vehicle_list.hidden FROM vehicle_list";
+      $sqlc = "LEFT JOIN vehicle_types ON vehicle_list.vehicle_type = vehicle_types.id LEFT JOIN vehicle_status ON vehicle_list.veh_status = vehicle_status.id ORDER BY hidden ASC, callsign ASC";
       $sql = "$sqla $sqlb $sqlc";
       $result = $conn->query($sql);
 
 			if ($result->num_rows > 0) {
 				while($row = $result->fetch_assoc()) {
-					echo'<tr>
+          if ($row['hidden'] != 0) {
+            $col = "class='w3-orange'";
+          } else {
+            $col = NULL;
+          }
+					echo'<tr '.$col.'>
                 <td class="xedit" data-type="text" data-clear="1" data-pk="'.$row['id'].'" data-name="callsign">'.$row['callsign'].'</td>
   							<td class="xedit" data-type="select" data-source="'.$types.'" data-pk="'.$row['id'].'" data-name="vehicle_type">'.$row['vehicle_type'].'</td>
   							<td class="xedit" data-type="text" data-clear="1" data-pk="'.$row['id'].'" data-name="registration">'.$row['registration'].'</td>

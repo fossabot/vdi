@@ -12,9 +12,9 @@ $q = $_GET['q']; //gets the live search information
 		<div class="w3-container">
 			<?php
 			if ($q === "all") {
-				$sql = "SELECT * FROM vehicle_list ORDER BY callsign";
+				$sql = "SELECT * FROM vehicle_list WHERE hidden = 0 ORDER BY callsign";
 			} elseif (strlen($q) > 0) {
-				$sql = "SELECT * FROM vehicle_list WHERE callsign LIKE '%$q%' ORDER BY callsign";
+				$sql = "SELECT * FROM vehicle_list WHERE callsign LIKE '%$q%' AND hidden = 0 ORDER BY callsign";
 			} else {
 				echo "Error: Live data not available";
 				exit;
