@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 26, 2018 at 09:59 PM
+-- Generation Time: Mar 27, 2018 at 11:08 PM
 -- Server version: 5.7.21-0ubuntu0.16.04.1
 -- PHP Version: 7.0.28-0ubuntu0.16.04.1
 
@@ -143,10 +143,12 @@ CREATE TABLE `menu` (
 INSERT INTO `menu` (`id`, `name`, `link`, `user_role`, `position`) VALUES
 (1, 'Home (Vehicle Board)', '/vdi/', 1, 1),
 (2, 'VDI Fault List', 'vdi-action.php', 3, 2),
-(3, 'GitHub Repositry', 'https://github.com/chssn/vdi/issues', 4, 5),
-(4, 'Logout', 'login.php?logout', 1, 6),
-(5, 'Engineering', 'eng.php', 4, 4),
-(6, 'Edit Vehicles', 'edit-vehicle.php', 3, 3);
+(3, 'Project Page (GitHub)', 'https://github.com/chssn/vdi/issues', 1, 7),
+(4, 'Logout', 'login.php?logout', 1, 8),
+(5, 'Engineering', 'eng.php', 4, 6),
+(6, 'Admin Edit Vehicles', 'edit-vehicle.php', 4, 5),
+(7, 'DLO Edit Vehicles', 'dlo-edit-vehicle.php', 3, 4),
+(9, 'CRIP', 'crip.php', 4, 3);
 
 -- --------------------------------------------------------
 
@@ -161,7 +163,7 @@ CREATE TABLE `users` (
   `surname` varchar(32) NOT NULL,
   `email` varchar(32) NOT NULL,
   `user_role` int(11) NOT NULL DEFAULT '0',
-  `last_login` int(11) NOT NULL DEFAULT '0',
+  `last_login` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `session_key` varchar(256) NOT NULL,
   `password` varchar(256) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -246,7 +248,8 @@ CREATE TABLE `vehicle_list` (
   `veh_status` int(11) NOT NULL DEFAULT '1',
   `issi_hh1` int(11) NOT NULL,
   `issi_hh2` int(11) NOT NULL,
-  `issi_veh` int(11) NOT NULL
+  `issi_veh` int(11) NOT NULL,
+  `hidden` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -393,7 +396,7 @@ ALTER TABLE `location`
 -- AUTO_INCREMENT for table `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `users`
 --
