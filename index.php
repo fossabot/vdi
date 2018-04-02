@@ -35,7 +35,7 @@ check_auth(1);
 		<?php include "include/header.php" ; ?>
 		<form class="w3-container">
 			<input class="w3-input w3-border w3-margin-bottom" placeholder="Type to search..." type="text" size="30" onkeyup="showResult(this.value)">
-			<div id="livesearch"></div>
 		</form>
+		<div id="livesearch"></div>
 	</body>
 </html>

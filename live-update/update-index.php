@@ -80,7 +80,7 @@ $q = $_GET['q']; //gets the live search information
 										<?php
 										//allow authorised users to add a comment to the vehicle screen
 										if ($_SESSION['role'] >= 3) {
-											?><a onclick="document.getElementById('comment<?php echo $row['id']; ?>').style.display='block'; clearTimeout(timer);" class="w3-bar-item w3-button">Add Note</a><?php
+											?><a onclick="document.getElementById('comment<?php echo $row['id']; ?>').style.display='block';" class="w3-bar-item w3-button">Add Note</a><?php
 										}
 										?>
 									</div>

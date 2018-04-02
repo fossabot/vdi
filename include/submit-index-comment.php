@@ -46,7 +46,7 @@ if (isset($_GET['row'])) {
   }
 
   //update vehicle status
-  $sql = "UPDATE vehicle_list SET veh_status = 0 WHERE id = '$vehicle_id'";
+  $sql = "UPDATE vehicle_list SET veh_status = 1 WHERE id = '$vehicle_id'";
   if ($conn->query($sql) === TRUE) {
       $last_id = $conn->insert_id;
   } else {
