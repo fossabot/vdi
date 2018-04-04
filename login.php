@@ -1,7 +1,9 @@
 <?php
 session_start();
+$phpself = explode('/', $_SERVER['PHP_SELF']);
+$url = $phpself[1];
 if (isset($_GET['logout'])) {
-	setcookie('vdiuser', 0, 1,"/vdi/", "vremote.theparkys.net", 1, 1); //set the cookie so that it has expired
+	setcookie('vdiuser', 0, 1,"/$url/", "vremote.theparkys.net", 1, 1); //set the cookie so that it has expired
 	session_unset();
   session_destroy();
 }
@@ -24,7 +26,7 @@ if (isset($_POST['login'])) {
 				$cookie_name = "vdiuser";
 				$cookie_value = GenerateRandomSequenceKey();
 				$cookie_expire = 0; // cookie expires when the browser closes
-				setcookie($cookie_name, $cookie_value, $cookie_expire,"/vdi/", "vremote.theparkys.net", 1, 1);
+				setcookie($cookie_name, $cookie_value, $cookie_expire,"/$url/", "vremote.theparkys.net", 1, 1);
 				// update user record with cookie value
 				$sql = "UPDATE users SET session_key = '$cookie_value' WHERE staff_number = '" . $_POST['usrname'] . "' LIMIT 1";
 
@@ -42,7 +44,8 @@ if (isset($_POST['login'])) {
 						$_SESSION['role'] = $row['user_role'];
 						$_SESSION['key'] = $cookie_value;
 
-						header('Location: /vdi/');
+						$header = "Location: /$url/";
+						header($header);
 				} else {
 				    echo "Error: " . $sql . "<br>" . $conn->error;
 					exit;

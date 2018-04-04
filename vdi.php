@@ -15,8 +15,8 @@ if(isset($_GET['veh'])) {
 
 	//check if this is a valid vdi sheet by subtracting the submission time from now
 	$submission_time = time() - $identifier[1];
-	if($submission_time > 3600) {
-		echo "Error - Invalid time stamp<br />Click <a href='/vdi/'>here</a> to return to the main page";
+	if($submission_time > 43200) { //set timeout to 12 hours
+		echo "Error - Invalid time stamp. Use the back button on your browser.";
 		exit;
 	}
 
@@ -100,12 +100,12 @@ if(isset($_GET['veh'])) {
 		<div class="w3-top">
 			<div class="w3-bar <?php echo  $color; ?>">
 				<a class="w3-bar-item w3-mobile w3-hide-small"><?php echo $veh_callsign . " - " . $veh_reg . " - " . $veh_type; ?></a>
-				<a class="w3-bar-item w3-mobile w3-hide-small w3-button w3-right" href="/vdi/">Vehicle Board</a>
+				<!--<a class="w3-bar-item w3-mobile w3-hide-small w3-button w3-right" href="/vdi/">Vehicle Board</a>-->
 				<a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="shrink_menu()">&#9776;</a>
 			</div>
 			<div id="small_bar" class="w3-bar-block <?php echo  $color; ?> w3-hide w3-hide-large w3-hide-medium">
 				<a class="w3-bar-item"><?php echo $veh_callsign . " - " . $veh_reg . " - " . $veh_type; ?></a>
-				<a class="w3-bar-item w3-button" href="/vdi/">Vehicle Board</a>
+				<!--<a class="w3-bar-item w3-button" href="/vdi/">Vehicle Board</a>-->
 			</div>
 		</div>
 		<br /><br />
@@ -120,7 +120,7 @@ if(isset($_GET['veh'])) {
 						<!-- create a datalist for typing in the vehicle location -->
 						<datalist id="locations">
 							<?php
-							$sql = "SELECT id, location FROM location ORDER BY location";
+							$sql = "SELECT * FROM location ORDER BY location";
 							$result = $conn->query($sql);
 
 							if ($result->num_rows > 0) {
@@ -141,7 +141,7 @@ if(isset($_GET['veh'])) {
 						<fieldset><legend>Notes</legend>
 							<?php
 							//select any live notes associated with this vehicle
-							$sql_b = "SELECT timestamp,note FROM vehicle_notes WHERE vehicle_id = '$veh_id' AND expired = '0' ORDER BY timestamp";
+							$sql_b = "SELECT timestamp,note FROM vehicle_notes WHERE vehicle_id = '$veh_id' AND expired = 0 ORDER BY timestamp";
 							$result_b = $conn->query($sql_b);
 
 							if ($result_b->num_rows > 0) {
@@ -344,8 +344,8 @@ if(isset($_GET['veh'])) {
 						?>
 				</fieldset>
 				<br />
-				<div class="w3-bar w3-green">
-					<button class="w3-bar-item w3-green -button w3-center w3-mobile" type="submit" form="vdi_post">Submit VDI</button>
+				<div class="w3-container">
+					<button class="w3-btn w3-block w3-green" type="submit" form="vdi_post">Submit VDI</button>
 				</div>
 			</form>
 		</div>
