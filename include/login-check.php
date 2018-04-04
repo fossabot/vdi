@@ -1,7 +1,7 @@
 <?php
 session_start();
 if(!isset($_COOKIE['vdiuser'])) { // if no cookie is set then go to the login page
-  header('Location: /vdi/login.php');
+  header('Location: login.php');
   exit;
 } else {  // if a cookie is set...
   $ck_check = $_COOKIE['vdiuser'];
@@ -13,7 +13,7 @@ if(!isset($_COOKIE['vdiuser'])) { // if no cookie is set then go to the login pa
   if ($result->num_rows > 0) {
     //check if session exists
     if (!isset($_SESSION['key'])) {
-      header('Location: /vdi/login.php');
+      header('Location: login.php');
       exit;
     } else {
       // continue with page
@@ -38,7 +38,7 @@ if(!isset($_COOKIE['vdiuser'])) { // if no cookie is set then go to the login pa
       exit;
     }*/
   } else {
-    header('Location: /vdi/login.php');
+    header('Location: login.php');
     exit;
   }
 }
