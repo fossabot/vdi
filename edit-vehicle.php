@@ -7,10 +7,6 @@ check_auth(3); // 1 = all users, 2 = supervisor, 3 = DLO & 4 = admin
 <html lang="en">
 <head>
   <?php include_once 'include/scripts.php'; ?>
-  <!-- bootstrap -->
-    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
-    <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
-
     <!-- x-editable (bootstrap version) -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap-editable/js/bootstrap-editable.min.js"></script>
