@@ -276,11 +276,6 @@ if(isset($_GET['veh'])) {
 										<input class="w3-check" type="checkbox" id="check_<?php echo $row["id"]; ?>" name="check_<?php echo $row["id"]; ?>" onclick="hidetext(<?php echo $row["id"]; ?>)">
 										<label for="check_<?php echo $row["id"]; ?>"><?php echo $row["criteria"]; ?></label>
 										<br /><input class="w3-input" type="text" style="display:inline" id="detail_<?php echo $row["id"]; ?>" name="detail_<?php echo $row["id"]; ?>" placeholder="Fault Description" required>
-										<?php
-										if ($row['extra'] == 1) {
-											echo " - EXTRA DETAIL RQD!!!!!";
-										}
-										?>
 									</div>
 									<?php
 								}
@@ -303,11 +298,6 @@ if(isset($_GET['veh'])) {
 										<input class="w3-check" type="checkbox" id="check_<?php echo $row["id"]; ?>" name="check_<?php echo $row["id"]; ?>" onclick="hidetext(<?php echo $row["id"]; ?>)">
 										<label for="check_<?php echo $row["id"]; ?>"><?php echo $row["criteria"]; ?></label>
 										<br /><input class="w3-input" type="text" style="display:inline" id="detail_<?php echo $row["id"]; ?>" name="detail_<?php echo $row["id"]; ?>" placeholder="Fault Description" required>
-										<?php
-										if ($row['extra'] == 1) {
-											echo " - EXTRA DETAIL RQD!!!!!";
-										}
-										?>
 									</div>
 									<?php
 								}
