@@ -1,7 +1,7 @@
 <!-- create menu bar that remains at the top of the page when scrolling -->
 <?php require 'include/sql-connect.php'; ?>
 <nav class="navbar sticky-top navbar-dark bg-dark navbar-expand-lg">
-	<a class="navbar-brand" href="#">eVDI</a>
+	<a class="navbar-brand" href="/vdi/">eVDI</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -34,5 +34,4 @@
 			<li><span class="navbar-text">Logged in as <?php echo $_SESSION['name'] . " ($role_txt)"; ?></span></li>
 		</ul>
 	</div>
-		<!--<a class="nav-link" href="mailto:chris.parkinson@eastamb.nhs.uk"><b>UNDER DEVELOPMENT</b> - Contact Chris with any problems or suggestions.</a>-->
 </nav>
