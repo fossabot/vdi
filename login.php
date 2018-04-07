@@ -2,8 +2,10 @@
 session_start();
 $phpself = explode('/', $_SERVER['PHP_SELF']);
 $url = $phpself[1];
+$host = $_SERVER['HTTP_HOST'];
+
 if (isset($_GET['logout'])) {
-	setcookie('vdiuser', 0, 1,"/$url/", "vremote.theparkys.net", 1, 1); //set the cookie so that it has expired
+	setcookie('vdiuser', 0, 1,"/$url/", "$host", 1, 1); //set the cookie so that it has expired
 	session_unset();
   session_destroy();
 }
@@ -26,7 +28,7 @@ if (isset($_POST['login'])) {
 				$cookie_name = "vdiuser";
 				$cookie_value = GenerateRandomSequenceKey();
 				$cookie_expire = 0; // cookie expires when the browser closes
-				setcookie($cookie_name, $cookie_value, $cookie_expire,"/$url/", "vremote.theparkys.net", 1, 1);
+				setcookie($cookie_name, $cookie_value, $cookie_expire,"/$url/", "$host", 1, 1);
 				// update user record with cookie value
 				$sql = "UPDATE users SET session_key = '$cookie_value' WHERE staff_number = '" . $_POST['usrname'] . "' LIMIT 1";
 
@@ -67,46 +69,53 @@ if (isset($_POST['login'])) {
 		<?php include_once 'include/scripts.php'; ?>
 	</head>
 		<body>
-			<?php
-			if (isset($_GET['error'])) {
-				?>
-				<div class="w3-panel w3-red w3-display-container w3-top">
-					<span onclick="this.parentElement.style.display='none'" class="w3-button w3-red w3-large w3-display-topright">&times;</span>
-					<p>Your username or password is incorrect. Please try again.</p>
+			<div class="container">
+				<div class="row mx-auto">
+					<div class="col">
+						<?php
+						if (isset($_GET['error'])) {
+							?>
+							<div class="alert alert-warning" role="alert">
+								<h3 class="alert-heading">Warning</h3>
+								<p>Your username or password is incorrect. Please try again.</p>
+							</div>
+							<?php
+						} else {
+							?>
+							<!-- TEMPORARY ALERT -->
+							<div class="alert alert-primary" role="alert">
+								<h3 class="alert-heading">Password Information</h3>
+								<p>All passwords have been set to <b>1234</b></p>
+							</div>
+							<!-- TEMPORARY ALERT -->
+							<?php
+						}
+						?>
+					</div>
 				</div>
-				<?php
-			} else {
-				?>
-				<!-- TEMPORARY ALERT -->
-				<div class="w3-panel w3-blue w3-display-container w3-top">
-					<span onclick="this.parentElement.style.display='none'" class="w3-button w3-blue w3-large w3-display-topright">&times;</span>
-					<h3>Password Information</h3>
-					<p>All passwords have been set to <b>1234</b></p>
+				<div class="row mx-auto">
+					<div class="col">
+						<img src="images/logo.png" alt="EEAST" style="width:30%" class="img-fluid mx-auto d-block">
+						<br />
+						<h5 class="text-center">North & East Hertfordshire Operations</h5>
+					</div>
 				</div>
-				<!-- TEMPORARY ALERT -->
-				<?php
-			}
-			?>
-
-			<div class="w3-container w3-display-middle w3-mobile">
-
-			<div class="w3-center"><br>
-				<img src="images/logo.png" alt="EEAST" style="width:30%" class="w3-circle w3-margin-top">
-				<br />
-				North & East Hertfordshire Operations
+				<div class="row mx-auto">
+					<div class="col">
+						<form action="login.php" method="post">
+							<div class="form-group">
+								<label for="usrname"><b>Staff Number</b></label>
+								<input class="form-control" type="number" placeholder="Enter Staff Number" name="usrname" id="usrname" required>
+								<label for="psw"><b>Password</b></label>
+								<input class="form-control" type="password" placeholder="Enter Password" name="psw" id="psw" required>
+								<br />
+								<button type='submit' class='btn btn-success w-100' name="login">Login</button>
+							</div>
+						</form>
+					</div>
+				</div>
 			</div>
-
-			<form class="w3-container" action="login.php" method="post">
-				<div class="w3-section">
-					<label><b>Staff Number</b></label>
-					<input class="w3-input w3-border w3-margin-bottom" type="number" placeholder="Enter Staff Number" name="usrname" required>
-					<label><b>Password</b></label>
-					<input class="w3-input w3-border" type="password" placeholder="Enter Password" name="psw" required>
-					<button class="w3-button w3-block w3-green w3-section w3-padding" type="submit" name="login">Login</button>
-				</div>
-			</form>
-		</div>
-	</body>
+		</body>
 	</html>
 <?php
 }
