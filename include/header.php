@@ -30,12 +30,8 @@
 			}
 			$conn->close();
 			?>
-		</ul>
-	</div>
-	<div class="navbar-right">
-		<ul class="navbar-nav">
+			<li class="nav-item"><a class="nav-link" href="https://github.com/chssn/vdi"><i class="fab fa-github fa-lg text-white"></i></a></li>
 			<li><span class="navbar-text">Logged in as <?php echo $_SESSION['name'] . " ($role_txt)"; ?></span></li>
-			<li><a class="nav-item nav-link" href="https://github.com/chssn/vdi"><i class="fab fa-github fa-lg text-white"></i></a></li>
 		</ul>
 	</div>
 		<!--<a class="nav-link" href="mailto:chris.parkinson@eastamb.nhs.uk"><b>UNDER DEVELOPMENT</b> - Contact Chris with any problems or suggestions.</a>-->
