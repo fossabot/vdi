@@ -116,7 +116,7 @@ if(isset($_GET['veh'])) {
 					<div class="card-header"><h5>Details</h5></div>
 					<div class="card-body">
 						<h6 class="card-subtitle mb-2 text-muted">VDI for <?php echo $veh_callsign . " which is a " . $veh_type . ", registration " . $veh_reg; ?>.</h6>
-						<p class="card-text">VDI started by <?php echo $_SESSION['name'] . " at " . date('H:i d-m-Y', time()); ?></p>
+						<p class="card-text">VDI started by <?php echo $_SESSION['name'] . " at " . date('H:i d/m/Y', time()); ?></p>
 						<div class="form-group">
 							<input type="hidden" value="<?php echo $veh_id; ?>" name="veh_id">
 							<input type="hidden" name="staff_id" value="<?php echo $_SESSION['staff_number']; ?>">
