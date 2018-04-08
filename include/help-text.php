@@ -17,7 +17,7 @@ if ($result->num_rows > 0) {
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">
+          <div class="modal-body text-justify">
             <?php echo $row['help_text']; ?>
           </div>
           <div class="modal-footer">
