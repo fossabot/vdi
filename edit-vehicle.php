@@ -192,5 +192,6 @@ check_auth(3); // 1 = all users, 2 = supervisor, 3 = DLO & 4 = admin
       }
     }
 </script>
+<?php include 'include/footer.php'; ?>
 </body>
 </html>

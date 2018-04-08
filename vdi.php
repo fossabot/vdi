@@ -296,8 +296,6 @@ if(isset($_GET['veh'])) {
 				<button type='submit' class='btn btn-success w-100' form="vdi_post">Submit VDI</button>
 			</form>
 		</div>
+		<?php include 'include/footer.php'; ?>
 	</body>
 </html>
-<?php
-require 'include/footer.php';
-?>

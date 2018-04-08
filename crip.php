@@ -39,5 +39,6 @@ check_auth(4); // 1 = all users, 2 = supervisor, 3 = DLO & 4 = admin
     }
     ?>
   </div>
+  <?php include 'include/footer.php'; ?>
 </body>
 </html>

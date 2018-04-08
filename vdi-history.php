@@ -165,5 +165,6 @@ check_auth(2);
 		}
 		?>
 	</div>
+	<?php include 'include/footer.php'; ?>
 </body>
 </html>

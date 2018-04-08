@@ -157,8 +157,6 @@ check_auth(3);
 			?>
 
 		</div>
-		<?php
-		require 'include/footer.php';
-		?>
+		<?php include 'include/footer.php'; ?>
 	</body>
 </html>
