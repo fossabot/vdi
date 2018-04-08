@@ -30,9 +30,14 @@
 			}
 			$conn->close();
 			?>
+			<li class="nav-item d-lg-none"><a class="nav-link text-light" data-toggle="modal" data-target="#helpMe"><i class="fas fa-question-circle fa-lg text-white" data-toggle="tooltip" data-placement="bottom" title="Help"></i> Help</a></li>
+			<li><span class="navbar-text">Logged in as <?php echo $_SESSION['name'] . " ($role_txt)"; ?></span></li>
+		</ul>
+	</div>
+	<div class="mr-auto d-none d-lg-block">
+		<ul class="navbar-nav">
 			<li class="nav-item"><a class="nav-link" href="https://github.com/chssn/vdi"><i class="fab fa-github fa-lg text-white" data-toggle="tooltip" data-placement="bottom" title="GitHub Code Repositry"></i></a></li>
 			<li class="nav-item"><a class="nav-link" data-toggle="modal" data-target="#helpMe"><i class="fas fa-question-circle fa-lg text-white" data-toggle="tooltip" data-placement="bottom" title="Help"></i></a></li>
-			<li><span class="navbar-text">Logged in as <?php echo $_SESSION['name'] . " ($role_txt)"; ?></span></li>
 		</ul>
 	</div>
 </nav>
