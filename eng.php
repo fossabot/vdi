@@ -10,20 +10,13 @@ check_auth(4);
 </head>
 <body>
   <?php include 'include/header.php'; ?>
-  <div class="container-fluid">
-		<pre>
+  <div class="w3-container">
     <?php
-    echo "<h3>SESSION</h3>";
+    echo "<b>SESSION</b><br /><br />";
     print_r($_SESSION);
     echo "<br /><br />";
-    echo "<h3>COOKIE</h3>";
+    echo "<b>COOKIE</b><br /><br />";
     print_r($_COOKIE);
-		echo "<br /><br />";
-		echo "<h3>SERVER</h3>";
-		print_r($_SERVER);
     ?>
-	</pre>
   </div>
-	<?php include 'include/footer.php'; ?>
 </body>
-</html>

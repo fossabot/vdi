@@ -38,9 +38,7 @@ if ($outcome == 3) {
   	exit;
   }
 }
-$phpself = explode('/', $_SERVER['PHP_SELF']);
-$url = $phpself[1];
+
 //return to action page
-$header = "Location: /$url/vdi-action.php";
-header($header);
+header("Location: /vdi/vdi-action.php");
 ?>

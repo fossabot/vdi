@@ -33,9 +33,9 @@ check_auth(1);
 </head>
 	<body onload="showResult('all')">
 		<?php include "include/header.php" ; ?>
-			<label class="sr-only" for="search">Vehicle Search</label>
-			<input class="form-control" placeholder="Type here to search for a vehicle..." id="search" type="text" size="30" onkeyup="showResult(this.value)">
+		<form class="w3-container">
+			<input class="w3-input w3-border w3-margin-bottom" placeholder="Type to search..." type="text" size="30" onkeyup="showResult(this.value)">
+		</form>
 		<div id="livesearch"></div>
-		<?php include 'include/footer.php'; ?>
 	</body>
 </html>
