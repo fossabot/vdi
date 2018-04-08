@@ -10,7 +10,7 @@ check_auth(4);
 </head>
 <body>
   <?php include 'include/header.php'; ?>
-  <div class="container">
+  <div class="container-fluid">
 		<pre>
     <?php
     echo "<h3>SESSION</h3>";

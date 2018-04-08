@@ -110,7 +110,7 @@ if(isset($_GET['veh'])) {
 </head>
 	<body>
 		<?php include "include/header.php" ; require "include/sql-connect.php"; ?>
-		<div class="container">
+		<div class="container-fluid">
 			<form action="include/submit-vdi.php" method="post" id="vdi_post" name="vdi_post" onsubmit="return confirm('Are you sure you wish to submit this VDI?');">
 				<div class="card">
 					<div class="card-header"><h5>Details</h5></div>

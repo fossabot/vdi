@@ -34,7 +34,7 @@ check_auth(1);
 	<body onload="showResult('all')">
 		<?php include "include/header.php" ; ?>
 			<label class="sr-only" for="search">Vehicle Search</label>
-			<input class="form-control" placeholder="Type to search..." id="search" type="text" size="30" onkeyup="showResult(this.value)">
+			<input class="form-control" placeholder="Type here to search for a vehicle..." id="search" type="text" size="30" onkeyup="showResult(this.value)">
 		<div id="livesearch"></div>
 	</body>
 </html>

@@ -69,7 +69,7 @@ if (isset($_POST['login'])) {
 		<?php include_once 'include/scripts.php'; ?>
 	</head>
 		<body>
-			<div class="container">
+			<div class="container-fluid">
 				<div class="row mx-auto">
 					<div class="col">
 						<?php

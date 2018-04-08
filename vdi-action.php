@@ -14,7 +14,7 @@ check_auth(3);
 		require 'include/sql-connect.php';
 		$count = 1;
 		?>
-		<div class="container">
+		<div class="container-fluid">
 			<p>Last refreshed on <?php echo date('D d M Y H:i:s', time()); ?></p>
 			<h4><b>VDI Faults Raised</b></h4>
 			<?php
