@@ -95,9 +95,11 @@ if (isset($_POST['login'])) {
 				</div>
 				<div class="row mx-auto">
 					<div class="col">
-						<img src="images/logo.png" alt="EEAST" style="width:30%" class="img-fluid mx-auto d-block">
+						<!--<img src="images/logo.png" alt="EEAST" style="width:30%" class="img-fluid mx-auto d-block">
 						<br />
-						<h5 class="text-center">North & East Hertfordshire Operations</h5>
+						<h5 class="text-center">North & East Hertfordshire Operations</h5>-->
+						<p class="text-center"><i class="fas fa-ambulance fa-10x" style="color: #009639"></i><p>
+						<h5 class="text-center">Electronic Vehicle Daily Inspection</h5>
 					</div>
 				</div>
 				<div class="row mx-auto">
