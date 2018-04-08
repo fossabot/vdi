@@ -7,38 +7,34 @@ check_auth(3); // 1 = all users, 2 = supervisor, 3 = DLO & 4 = admin
 <html lang="en">
 <head>
   <?php include_once 'include/scripts.php'; ?>
-  <!-- bootstrap -->
-    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
-    <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
-
     <!-- x-editable (bootstrap version) -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap-editable/js/bootstrap-editable.min.js"></script>
-    <script src="js/bootstrap-datepicker.en-GB.js"></script>
+    <!--<link href="css/tether.css" rel="stylesheet"/>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap-editable/js/bootstrap-editable.min.js"></script>-->
+    <script src="js/x-editable-bs4.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js" integrity="sha256-ncetQ5WcFxZU3YIwggfwOwmewLVX4SHLBtDYnrsxooY=" crossorigin="anonymous"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.en-GB.min.js" integrity="sha256-zWVLv9rjdSAUVWhtqJUdGV1O5ONXpXMEJsOkp7B2gZ4=" crossorigin="anonymous"></script>
+    <!--<script src="js/bootstrap-datepicker.en-GB.js"></script>-->
+    <!--<script src="js/tether.js"></script>-->
 </head>
 <body>
   <?php
   require 'include/header.php';
   require 'include/sql-connect.php';
   ?>
-  <br /><br />
-  <div class="w3-container">
-    <table class="w3-table-all w3-hoverable">
-      <?php
-      if($_SESSION['role'] == 3) { ?>
-        <tr><th colspan="3"></th><th class="w3-center w3-blue" colspan="3">Editable Fields</th><th colspan="3"></th></tr>
-      <?php } ?>
+  <div class="container-fluid">
+    <table class="table table-striped">
       <tr>
-        <th>Callsign</th>
-        <th>Vehicle Type</th>
-        <th>Registration</th>
-        <th>MOT Due</th>
-        <th>Service Due</th>
-        <th>Vehicle Status</th>
-        <th>ISSI HH1</th>
-        <th>ISSI HH2</th>
-        <th>ISSI VEH</th>
-        <th>Delete</th>
+        <th scope="col">Callsign</th>
+        <th scope="col">Vehicle Type</th>
+        <th scope="col">Registration</th>
+        <th scope="col">MOT Due</th>
+        <th scope="col">Service Due</th>
+        <th scope="col">Vehicle Status</th>
+        <th scope="col">ISSI HH1</th>
+        <th scope="col">ISSI HH2</th>
+        <th scope="col">ISSI VEH</th>
+        <th scope="col">Delete</th>
       </tr>
       <?php
       //put vehicle types into x-editable array
@@ -86,7 +82,7 @@ check_auth(3); // 1 = all users, 2 = supervisor, 3 = DLO & 4 = admin
                   <td>'.$row['issi_hh1'].'</td>
                   <td>'.$row['issi_hh2'].'</td>
                   <td>'.$row['issi_veh'].'</td>
-                  <td><button class="w3-button" onclick="deleteRecord(`'.$hash.'`,`'.$row['callsign'].'`)"><i class="fas fa-minus-circle"></i></button></td>
+                  <td><button class="btn btn-outline-danger" onclick="deleteRecord(`'.$hash.'`,`'.$row['callsign'].'`)"><i class="fas fa-trash-alt"></i></i></button></td>
                 </tr>';
   			    }
           }
@@ -102,7 +98,7 @@ check_auth(3); // 1 = all users, 2 = supervisor, 3 = DLO & 4 = admin
     				while($row = $result->fetch_assoc()) {
               $hash = hash('sha256', $row['callsign']."-".$row['registration']."-".$row['id']."-".$salt); //create sha256 hash to remove a vehicle from display
               if ($row['hidden'] != 0) {
-                $col = "class='w3-orange'";
+                $col = "class='table-warning'";
               } else {
                 $col = NULL;
               }
@@ -118,9 +114,9 @@ check_auth(3); // 1 = all users, 2 = supervisor, 3 = DLO & 4 = admin
                     <td class="xedit" data-type="text" data-clear="1" data-pk="'.$row['id'].'" data-name="issi_veh">'.$row['issi_veh'].'</td>';
 
                 if ($row['hidden'] == 1) { //if hidden allow to add
-                  echo '<td><button class="w3-button" onclick="restoreRecord(`'.$hash.'`,`'.$row['callsign'].'`)"><i class="fas fa-plus-circle"></i></button></td>';
+                  echo '<td><button class="btn btn-outline-success" onclick="restoreRecord(`'.$hash.'`,`'.$row['callsign'].'`)"><i class="fas fa-plus-circle"></i></button></td>';
                 } elseif ($row['hidden'] == 0) { //if showing allow to remove
-                  echo '<td><button class="w3-button" onclick="deleteRecord(`'.$hash.'`,`'.$row['callsign'].'`)"><i class="fas fa-minus-circle"></i></button></td>';
+                  echo '<td><button class="btn btn-outline-danger" onclick="deleteRecord(`'.$hash.'`,`'.$row['callsign'].'`)"><i class="fas fa-trash-alt"></i></button></td>';
                 }
                 echo "</tr>";
               }
@@ -132,7 +128,7 @@ check_auth(3); // 1 = all users, 2 = supervisor, 3 = DLO & 4 = admin
   <script type="text/javascript">
     jQuery(document).ready(function() {
       //toggle popup or inline mode
-      $.fn.editable.defaults.mode = 'popup';
+      $.fn.editable.defaults.mode = 'inline';
 
       //make any element with class=xedit editable
       $('.xedit').editable({
@@ -196,5 +192,6 @@ check_auth(3); // 1 = all users, 2 = supervisor, 3 = DLO & 4 = admin
       }
     }
 </script>
+<?php include 'include/footer.php'; ?>
 </body>
 </html>

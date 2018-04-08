@@ -30,7 +30,13 @@ if (isset($_GET['row'])) {
     }
 
     //return to vehicle page
-    header("Location: /vdi/");
+    $phpself = explode('/', $_SERVER['PHP_SELF']);
+    $url = $phpself[1];
+    //return to action page
+    $header = "Location: /$url/";
+    header($header);
+  } else {
+    print_r($_POST);
   }
 } elseif (isset($_GET['delnote'])) { //section to hide the note from the vehicle screen
   require 'sql-connect.php';
@@ -55,6 +61,10 @@ if (isset($_GET['row'])) {
   }
 
   //return to vehicle page
-  header("Location: /vdi/");
+  $phpself = explode('/', $_SERVER['PHP_SELF']);
+  $url = $phpself[1];
+  //return to action page
+  $header = "Location: /$url/";
+  header($header);
 }
 ?>

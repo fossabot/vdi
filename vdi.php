@@ -6,6 +6,29 @@ check_auth(1);
 <!DOCTYPE html>
 <?php
 require 'include/sql-connect.php';
+//set page specific functions
+function printCriteria($query) { //function for printing all of the VDI criteria for each section
+	if ($query->num_rows > 0) {
+		// output data of each row
+		while($row = $query->fetch_assoc()) {
+			?>
+				<div class="btn-group btn-group-toggle" data-toggle="buttons">
+					<label class="btn btn-outline-danger active">
+						<input type="radio" onfocus="hidetext('<?php echo $row["id"]; ?>')" name="check_<?php echo $row["id"]; ?>" id="check_<?php echo $row["id"]; ?>" value="0" autocomplete="off" checked> <i class="fas fa-times"></i>
+					</label>
+					<label class="btn btn-outline-success">
+						<input type="radio" onfocus="hidetext('<?php echo $row["id"]; ?>')" name="check_<?php echo $row["id"]; ?>" id="check_<?php echo $row["id"]; ?>" value="1" autocomplete="off"> <i class="fas fa-check"></i>
+					</label>
+				</div>
+				<label for="check_<?php echo $row["id"]; ?>"><?php echo $row["criteria"]; ?></label>
+				<input class="form-control" type="text" style="display:inline" id="detail_<?php echo $row["id"]; ?>" name="detail_<?php echo $row["id"]; ?>" placeholder="Fault Description" required>
+				<hr />
+			<?php
+		}
+	} else {
+		echo "Error";
+	}
+}
 
 //check if vehicle id has been set
 if(isset($_GET['veh'])) {
@@ -83,82 +106,70 @@ if(isset($_GET['veh'])) {
 				document.getElementById(cdl).required = true;
 			}
 		};
-
-		//shrink menu on mobile devices script
-		function shrink_menu() {
-			var x = document.getElementById("small_bar");
-			if (x.className.indexOf("w3-show") == -1) {
-				x.className += " w3-show";
-			} else {
-				x.className = x.className.replace(" w3-show", "");
-			}
-		}
 	</script>
 </head>
 	<body>
-		<!-- create menu bar that remains at the top of the page when scrolling -->
-		<div class="w3-top">
-			<div class="w3-bar <?php echo  $color; ?>">
-				<a class="w3-bar-item w3-mobile w3-hide-small"><?php echo $veh_callsign . " - " . $veh_reg . " - " . $veh_type; ?></a>
-				<!--<a class="w3-bar-item w3-mobile w3-hide-small w3-button w3-right" href="/vdi/">Vehicle Board</a>-->
-				<a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="shrink_menu()">&#9776;</a>
-			</div>
-			<div id="small_bar" class="w3-bar-block <?php echo  $color; ?> w3-hide w3-hide-large w3-hide-medium">
-				<a class="w3-bar-item"><?php echo $veh_callsign . " - " . $veh_reg . " - " . $veh_type; ?></a>
-				<!--<a class="w3-bar-item w3-button" href="/vdi/">Vehicle Board</a>-->
-			</div>
-		</div>
-		<br /><br />
-		<div class="w3-container">
+		<?php include "include/header.php" ; require "include/sql-connect.php"; ?>
+		<div class="container-fluid">
 			<form action="include/submit-vdi.php" method="post" id="vdi_post" name="vdi_post" onsubmit="return confirm('Are you sure you wish to submit this VDI?');">
-				<fieldset>
-					<legend>Details</legend>
-					<div>
-						<input type="hidden" value="<?php echo $veh_id; ?>" name="veh_id">
-						<input type="hidden" name="staff_id" value="<?php echo $_SESSION['staff_number']; ?>">
+				<div class="card">
+					<div class="card-header"><h5>Details</h5></div>
+					<div class="card-body">
+						<h6 class="card-subtitle mb-2 text-muted">VDI for <?php echo $veh_callsign . " which is a " . $veh_type . ", registration " . $veh_reg; ?>.</h6>
+						<p class="card-text">VDI started by <?php echo $_SESSION['name'] . " at " . date('H:i d/m/Y', time()); ?></p>
+						<div class="form-group">
+							<input type="hidden" value="<?php echo $veh_id; ?>" name="veh_id">
+							<input type="hidden" name="staff_id" value="<?php echo $_SESSION['staff_number']; ?>">
 
-						<!-- create a datalist for typing in the vehicle location -->
-						<datalist id="locations">
-							<?php
-							$sql = "SELECT * FROM location ORDER BY location";
-							$result = $conn->query($sql);
+							<!-- create a datalist for typing in the vehicle location -->
+							<datalist id="locations">
+								<?php
+								$sql = "SELECT * FROM location ORDER BY location";
+								$result = $conn->query($sql);
 
-							if ($result->num_rows > 0) {
-								// output data of each row
-								while($row = $result->fetch_assoc()) {
-									?>
-									<option value="<?php echo $row["location"]; ?>" id="loc<?php echo $row["id"]; ?>">
-									<?php
+								if ($result->num_rows > 0) {
+									// output data of each row
+									while($row = $result->fetch_assoc()) {
+										?>
+										<option value="<?php echo $row["location"]; ?>" id="loc<?php echo $row["id"]; ?>">
+										<?php
+									}
+								} else {
+									echo "0 results";
 								}
-							} else {
-								echo "0 results";
-							}
-							?>
-						</datalist>
-						<br /><input class="w3-input" type="text" list="locations" placeholder="Vehicle Location" name="veh_loc" required>
+								?>
+							</datalist>
+							<input class="form-control" type="text" list="locations" placeholder="Vehicle Location" name="veh_loc" required>
+						</div>
+					</div>
+				</div>
+				<!-- section for vehicle notes, MOT and service dates including auto notify -->
+				<div class="card">
+					<div class="card-header"><h5>Notes</h5></div>
+					<div class="card-body">
+						<?php
+						//select any live notes associated with this vehicle
+						$sql_b = "SELECT timestamp,note FROM vehicle_notes WHERE vehicle_id = '$veh_id' AND expired = 0 ORDER BY timestamp";
+						$result_b = $conn->query($sql_b);
 
-						<!-- section for vehicle notes, MOT and service dates including auto notify -->
-						<fieldset><legend>Notes</legend>
-							<?php
-							//select any live notes associated with this vehicle
-							$sql_b = "SELECT timestamp,note FROM vehicle_notes WHERE vehicle_id = '$veh_id' AND expired = 0 ORDER BY timestamp";
-							$result_b = $conn->query($sql_b);
-
-							if ($result_b->num_rows > 0) {
-								// output data of each row
-								while($row_b = $result_b->fetch_assoc()) {
-									echo "<div style='color:red'>" . date('d/m/y H:i', strtotime($row_b['timestamp'])) . "<br />" . $row_b['note'] . "</div><hr>";
-								}
-							} else {
-								echo "<div>No active notes</div>";
+						if ($result_b->num_rows > 0) {
+							// output data of each row
+							while($row_b = $result_b->fetch_assoc()) {
+								echo "<p class='card-text text-danger'>" . date('d/m/y H:i', strtotime($row_b['timestamp'])) . "<br />" . $row_b['note'] . "</p><hr>";
 							}
-							?>
-						</fieldset>
-						<fieldset><legend>MOT Status</legend>
+						} else {
+							echo '<h6 class="card-subtitle mb-2 text-muted">No active notes</h6>';
+						}
+						?>
+					</div>
+				</div>
+				<div class="card">
+					<div class="card-header"><h5>MOT Status</h5></div>
+					<div class="card-body">
 						<?php
 						if($veh_mot_diff > $unix_month) {
 							$print = "Ok";
-							$warn = "w3-green";
+							$warn = "btn-success";
 						} elseif (($veh_mot_diff <= $unix_month) && ($veh_mot_diff > 0)) {
 							$days = intval(intval($veh_mot_diff) / (3600*24));
 							if($days > 0)
@@ -168,30 +179,33 @@ if(isset($_GET['veh'])) {
 								$days_out = 0;
 							}
 							$print = "MOT is due in $days_out days";
-							$warn = "w3-orange";
+							$warn = "btn-warning";
 						} elseif ($veh_mot_diff <= 0) {
 							$print = "OVERDUE MOT";
-							$warn = "w3-red";
+							$warn = "btn-danger";
 							$exit = 1;
 						}
-						echo "<div class='$warn w3-panel w3-center w3-card-4'>$print</div>";
+						echo "<button type='button' class='btn $warn w-100'>$print</button>";
 
 						//stop the script and display a warning if the MOT has expired.
 						if (isset($exit)) {
 							?>
-							<div class="w3-panel w3-red w3-card-4 w3-center">
-								<h3>WARNING!</h3>
-								<p>This vehicle is overdue it's MOT and must not be driven</p>
+							<div class="alert alert-danger" role="alert">
+								<h4 class="alert-heading">WARNING!</h4>
+								This vehicle is overdue it's MOT and must not be driven
 							</div>
 							<?php
 						}
 						?>
-						</fieldset>
-						<fieldset><legend>Service Status</legend>
+					</div>
+				</div>
+				<div class="card">
+					<div class="card-header"><h5>Service Status</h5></div>
+					<div class="card-body">
 						<?php
 						if($veh_service_diff > $unix_month) {
 							$print = "Ok";
-							$warn = "w3-green";
+							$warn = "btn-outline-success";
 						} elseif (($veh_service_diff <= $unix_month) && ($veh_service_diff > 0)) {
 							$days = intval(intval($veh_mot_diff) / (3600*24));
 							if($days > 0)
@@ -201,146 +215,87 @@ if(isset($_GET['veh'])) {
 								$days_out = 0;
 							}
 							$print = "Service is due in $days_out days";
-							$warn = "w3-orange";
+							$warn = "btn-outline-warning";
 						} elseif ($veh_service_diff <= 0) {
 							$print = "OVERDUE SERVICE";
-							$warn = "w3-red";
+							$warn = "btn-outline-danger";
 						}
-						echo "<div class='$warn w3-panel w3-center w3-card-4'>$print</div>";
+						echo "<button type='button' class='btn $warn w-100'>$print</button>";
 						?>
-						</fieldset>
 					</div>
-				</fieldset>
-				<fieldset>
-					<legend><b>Statutory Check / Trust Requirements</b></legend>
-					<div style="text-align:justify">
-						The statutory check and pre-response (Trust requirement) checks must be undertaken prior to using the vehicle. The only exception is if you are allocated to respond to a C1 or predicted C1 call. You must complete these checks at the commencement of your duty and these should take no longer than 15 minutes to complete. The remaining checks should be completed at the earliest opportunity in your shift. Vehcile inspection should be carried out at the beginning of each shift and at any subsequent shift change.
-					</div>
-				</fieldset>
-				<fieldset>
-					<legend class="w3-text-red">Statutory Vehicle Inspection</legend>
-						<?php
-							$sql = "SELECT * FROM inspection_points WHERE $veh_use = 1 AND section = 1";
-							$result = $conn->query($sql);
-
-							if ($result->num_rows > 0) {
-								// output data of each row
-								while($row = $result->fetch_assoc()) {
-									?>
-									<div>
-										<input class="w3-check" type="checkbox" id="check_<?php echo $row["id"]; ?>" name="check_<?php echo $row["id"]; ?>" onclick="hidetext(<?php echo $row["id"]; ?>)">
-										<label for="check_<?php echo $row["id"]; ?>"><?php echo $row["criteria"]; ?></label>
-										<br /><input class="w3-input" type="text" style="display:inline" id="detail_<?php echo $row["id"]; ?>" name="detail_<?php echo $row["id"]; ?>" placeholder="Fault Description" required>
-									</div>
-									<?php
-								}
-							} else {
-								echo "0 results";
-							}
-						?>
-				</fieldset>
-				<fieldset>
-					<legend class="w3-text-red">Pre-Response Checks (Trust Requirement)</legend>
-						<?php
-							$sql = "SELECT * FROM inspection_points WHERE $veh_use = 1 AND section = 2";
-							$result = $conn->query($sql);
-
-							if ($result->num_rows > 0) {
-								// output data of each row
-								while($row = $result->fetch_assoc()) {
-									?>
-									<div>
-										<input class="w3-check" type="checkbox" id="check_<?php echo $row["id"]; ?>" name="check_<?php echo $row["id"]; ?>" onclick="hidetext(<?php echo $row["id"]; ?>)">
-										<label for="check_<?php echo $row["id"]; ?>"><?php echo $row["criteria"]; ?></label>
-										<br /><input class="w3-input" type="text" style="display:inline" id="detail_<?php echo $row["id"]; ?>" name="detail_<?php echo $row["id"]; ?>" placeholder="Fault Description" required>
-									</div>
-									<?php
-								}
-							} else {
-								echo "0 results";
-							}
-						?>
-				</fieldset>
-				<!-- consider putting this on a second page so as to update any extra information based on the vehicle - or some kind of dynamic update -->
-				<fieldset>
-					<legend>Miscellaneous</legend>
-						<?php
-							$sql = "SELECT * FROM inspection_points WHERE $veh_use = 1 AND section = 3";
-							$result = $conn->query($sql);
-
-							if ($result->num_rows > 0) {
-								// output data of each row
-								while($row = $result->fetch_assoc()) {
-									?>
-									<div>
-										<input class="w3-check" type="checkbox" id="check_<?php echo $row["id"]; ?>" name="check_<?php echo $row["id"]; ?>" onclick="hidetext(<?php echo $row["id"]; ?>)">
-										<label for="check_<?php echo $row["id"]; ?>"><?php echo $row["criteria"]; ?></label>
-										<br /><input class="w3-input" type="text" style="display:inline" id="detail_<?php echo $row["id"]; ?>" name="detail_<?php echo $row["id"]; ?>" placeholder="Fault Description" required>
-									</div>
-									<?php
-								}
-							} else {
-								echo "0 results";
-							}
-						?>
-				</fieldset>
-				<fieldset>
-					<legend>Clinical/Rear Compartment</legend>
-						<?php
-							$sql = "SELECT * FROM inspection_points WHERE $veh_use = 1 AND section = 4";
-							$result = $conn->query($sql);
-
-							if ($result->num_rows > 0) {
-								// output data of each row
-								while($row = $result->fetch_assoc()) {
-									?>
-									<div>
-										<input class="w3-check" type="checkbox" id="check_<?php echo $row["id"]; ?>" name="check_<?php echo $row["id"]; ?>" onclick="hidetext(<?php echo $row["id"]; ?>)">
-										<label for="check_<?php echo $row["id"]; ?>"><?php echo $row["criteria"]; ?></label>
-										<br /><input class="w3-input" type="text" style="display:inline" id="detail_<?php echo $row["id"]; ?>" name="detail_<?php echo $row["id"]; ?>" placeholder="Fault Description" required>
-									</div>
-									<?php
-								}
-							} else {
-								echo "0 results";
-							}
-						?>
-				</fieldset>
-				<fieldset>
-					<legend>Cleaning</legend>
-						<?php
-							$sql = "SELECT * FROM inspection_points WHERE $veh_use = 1 AND section = 5";
-							$result = $conn->query($sql);
-
-							if ($result->num_rows > 0) {
-								// output data of each row
-								while($row = $result->fetch_assoc()) {
-									?>
-									<div>
-										<input class="w3-check" type="checkbox" id="check_<?php echo $row["id"]; ?>" name="check_<?php echo $row["id"]; ?>" onclick="hidetext(<?php echo $row["id"]; ?>)">
-										<label for="check_<?php echo $row["id"]; ?>"><?php echo $row["criteria"]; ?></label>
-										<br /><input class="w3-input" type="text" style="display:inline" id="detail_<?php echo $row["id"]; ?>" name="detail_<?php echo $row["id"]; ?>" placeholder="Fault Description" required>
-										<?php
-										if ($row['extra'] == 1) {
-											echo " - EXTRA DETAIL RQD!!!!!";
-										}
-										?>
-									</div>
-									<?php
-								}
-							} else {
-								echo "0 results";
-							}
-						?>
-				</fieldset>
-				<br />
-				<div class="w3-container">
-					<button class="w3-btn w3-block w3-green" type="submit" form="vdi_post">Submit VDI</button>
 				</div>
+				<div class="card">
+					<div class="card-header"><h5>Statutory Check / Trust Requirements</h5></div>
+					<div class="card-body">
+						<p class="text-justify">
+							The statutory check and pre-response (Trust requirement) checks must be undertaken prior to using the vehicle. The only exception is if you are allocated to respond to a C1 or predicted C1 call. You must complete these checks at the commencement of your duty and these should take no longer than 15 minutes to complete. The remaining checks should be completed at the earliest opportunity in your shift. Vehicle inspection should be carried out at the beginning of each shift and at any subsequent shift change.
+						</p>
+					</div>
+				</div>
+				<div class="card">
+					<div class="card-header text-danger"><h5>Statutory Vehicle Inspection</h5></div>
+					<div class="card-body">
+						<div class="form-group">
+							<?php
+								$sql = "SELECT * FROM inspection_points WHERE $veh_use = 1 AND section = 1";
+								$result = $conn->query($sql);
+								printCriteria($result);
+							?>
+						</div>
+					</div>
+				</div>
+				<div class="card">
+					<div class="card-header text-danger"><h5>Pre-Response Checks (Trust Requirement)</h5></div>
+					<div class="card-body">
+						<div class="form-group">
+							<?php
+								$sql = "SELECT * FROM inspection_points WHERE $veh_use = 1 AND section = 2";
+								$result = $conn->query($sql);
+								printCriteria($result);
+							?>
+						</div>
+					</div>
+				</div>
+				<div class="card">
+					<div class="card-header"><h5>Miscellaneous</h5></div>
+					<div class="card-body">
+						<div class="form-group">
+							<?php
+								$sql = "SELECT * FROM inspection_points WHERE $veh_use = 1 AND section = 3";
+								$result = $conn->query($sql);
+								printCriteria($result);
+							?>
+						</div>
+					</div>
+				</div>
+				<div class="card">
+					<div class="card-header"><h5>Clinical/Rear Compartment</h5></div>
+					<div class="card-body">
+						<div class="form-group">
+							<?php
+								$sql = "SELECT * FROM inspection_points WHERE $veh_use = 1 AND section = 4";
+								$result = $conn->query($sql);
+								printCriteria($result);
+							?>
+						</div>
+					</div>
+				</div>
+				<div class="card">
+					<div class="card-header"><h5>Cleaning</h5></div>
+					<div class="card-body">
+						<div class="form-group">
+							<?php
+								$sql = "SELECT * FROM inspection_points WHERE $veh_use = 1 AND section = 5";
+								$result = $conn->query($sql);
+								printCriteria($result);
+							?>
+						</div>
+					</div>
+				</div>
+				<br />
+				<button type='submit' class='btn btn-success w-100' form="vdi_post">Submit VDI</button>
 			</form>
 		</div>
+		<?php include 'include/footer.php'; ?>
 	</body>
 </html>
-<?php
-require 'include/footer.php';
-?>

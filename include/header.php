@@ -1,54 +1,43 @@
 <!-- create menu bar that remains at the top of the page when scrolling -->
 <?php require 'include/sql-connect.php'; ?>
-<div class="w3-top">
-	<div class="w3-bar w3-green">
-		<div class="w3-dropdown-hover">
-			<button class="w3-button w3-green w3 w3-hide-small">Menu</button>
-			<div class="w3-dropdown-content w3-bar-block w3-card-4">
-				<?php
-				//get user role
-				$role = $_SESSION['role'] + 1;
+<nav class="navbar sticky-top navbar-dark navbar-expand-lg" style="background-color: #005EB8">
+	<a class="navbar-brand" href="/vdi/">eVDI</a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+	<div class="collapse navbar-collapse" id="navbarNavDropdown">
+		<ul class="navbar-nav">
+			<?php
+			//get user role
+			$role = $_SESSION['role'] + 1;
 
-				//user role name
-				$sql = "SELECT user_role FROM user_role WHERE id = " . $_SESSION['role'];
-				$result = $conn->query($sql);
-				$row = $result->fetch_assoc();
-				$role_txt = $row['user_role'];
+			//user role name
+			$sql = "SELECT user_role FROM user_role WHERE id = " . $_SESSION['role'];
+			$result = $conn->query($sql);
+			$row = $result->fetch_assoc();
+			$role_txt = $row['user_role'];
 
-				//list all menu items for user role
-				$sql = "SELECT name, link FROM menu WHERE (user_role > 0 AND user_role < $role) ORDER BY position";
-				$result = $conn->query($sql);
-				$mobile = NULL;
+			//list all menu items for user role
+			$sql = "SELECT name, link, human FROM menu WHERE (user_role > 0 AND user_role < $role) ORDER BY position";
+			$result = $conn->query($sql);
+			$mobile = NULL;
 
-				if ($result->num_rows > 0) {
-				// output data of each row
-					while($row = $result->fetch_assoc()) {
-						echo "<a href='" . $row['link'] . "' class='w3-bar-item w3-button w3-hide-small'>" . $row['name'] . "</a>";
-						$mobile .= "<a class='w3-bar-item w3-button' href='" . $row['link'] . "'>" . $row['name'] . "</a>";
-					}
+			if ($result->num_rows > 0) {
+			// output data of each row
+				while($row = $result->fetch_assoc()) {
+					echo "<li class='nav-item'><a class='nav-link d-none d-lg-block' href='" . $row['link'] . "'>" . $row['name'] . "</a><a class='nav-link d-lg-none text-light' href='" . $row['link'] . "'>" . $row['name'] . " " . $row['human'] . "</a></li>";
 				}
-				$conn->close();
-				?>
-			</div>
-		</div>
-		<a class="w3-bar-item w3-mobile w3-hide-small">Logged in as <?php echo $_SESSION['name'] . " ($role_txt)"; ?></a>
-		<a class="w3-bar-item w3-mobile w3-hide-small w3-button w3-right" href="mailto:chris.parkinson@eastamb.nhs.uk"><b>UNDER DEVELOPMENT</b> - Contact Chris with any problems or suggestions.</a>
-		<a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="shrink_menu()">&#9776;</a>
-	</div>
-	<div id="small_bar" class="w3-bar-block w3-light-gray w3-hide w3-hide-large w3-hide-medium">
-		<?php	echo $mobile; ?>
-		<a class="w3-bar-item w3-button" href="mailto:chris.parkinson@eastamb.nhs.uk"><b>UNDER DEVELOPMENT</b> - Contact Chris with any problems or suggestions.</a>
-	</div>
-	<script>
-		//shrink menu on mobile devices script
-		function shrink_menu() {
-			var x = document.getElementById("small_bar");
-			if (x.className.indexOf("w3-show") == -1) {
-				x.className += " w3-show";
-			} else {
-				x.className = x.className.replace(" w3-show", "");
 			}
-		}
-	</script>
-</div>
-<br /><br />
+			$conn->close();
+			?>
+			<li class="nav-item d-lg-none"><a class="nav-link text-light" data-toggle="modal" data-target="#helpMe"><i class="fas fa-question-circle fa-lg text-white" data-toggle="tooltip" data-placement="bottom" title="Help"></i> Help</a></li>
+			<li><span class="navbar-text">Logged in as <?php echo $_SESSION['name'] . " ($role_txt)"; ?></span></li>
+		</ul>
+	</div>
+	<div class="mr-auto d-none d-lg-block">
+		<ul class="navbar-nav">
+			<li class="nav-item"><a class="nav-link" href="https://github.com/chssn/vdi"><i class="fab fa-github fa-lg text-white" data-toggle="tooltip" data-placement="bottom" title="GitHub Code Repositry"></i></a></li>
+			<li class="nav-item"><a class="nav-link" data-toggle="modal" data-target="#helpMe"><i class="fas fa-question-circle fa-lg text-white" data-toggle="tooltip" data-placement="bottom" title="Help"></i></a></li>
+		</ul>
+	</div>
+</nav>
