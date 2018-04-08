@@ -70,7 +70,9 @@ $sql = substr($sql, 0, -1); //remove the last ; from the SQL INSERT command.
 //put something in here to generate an email to the user and DLO team (if there are any points raised)
 
 if (mysqli_multi_query($conn, $sql)) {
-    //echo "New records created successfully";
+    //check to see if this vehicle has been flagged to provide additional information
+		//$_POST['veh_id']
+		$check = "SELECT something FROM somewhere JOIN another_table ON something = something_else";
 	?><script>alert('VDI successfully sent'); window.location.replace("../index.php");</script><?php
 } else {
     echo "Error: " . $sql . "<br>" . mysqli_error($conn);
