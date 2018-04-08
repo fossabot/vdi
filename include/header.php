@@ -1,6 +1,6 @@
 <!-- create menu bar that remains at the top of the page when scrolling -->
 <?php require 'include/sql-connect.php'; ?>
-<nav class="navbar sticky-top navbar-dark bg-dark navbar-expand-lg">
+<nav class="navbar sticky-top navbar-dark navbar-expand-lg" style="background-color: #005EB8">
 	<a class="navbar-brand" href="/vdi/">eVDI</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -18,14 +18,14 @@
 			$role_txt = $row['user_role'];
 
 			//list all menu items for user role
-			$sql = "SELECT name, link FROM menu WHERE (user_role > 0 AND user_role < $role) ORDER BY position";
+			$sql = "SELECT name, link, human FROM menu WHERE (user_role > 0 AND user_role < $role) ORDER BY position";
 			$result = $conn->query($sql);
 			$mobile = NULL;
 
 			if ($result->num_rows > 0) {
 			// output data of each row
 				while($row = $result->fetch_assoc()) {
-					echo "<li class='nav-item'><a class='nav-link' href='" . $row['link'] . "'>" . $row['name'] . "</a></li>";
+					echo "<li class='nav-item'><a class='nav-link d-none d-lg-block' href='" . $row['link'] . "'>" . $row['name'] . "</a><a class='nav-link d-lg-none text-light' href='" . $row['link'] . "'>" . $row['name'] . " " . $row['human'] . "</a></li>";
 				}
 			}
 			$conn->close();
