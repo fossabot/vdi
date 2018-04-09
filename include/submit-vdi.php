@@ -38,10 +38,10 @@ foreach($_POST as $x=>$x_value) {
 		$split = explode('_', $x);
 		$ipid_a = $split[1];
 		//check if box was checked or not
-		if($x_value == "on") {
+		if($x_value == 1) {
 			$report = 1;
-		}
-		$chk = 1;
+		
+		$chk = 1;}
 	} elseif(substr($x, 0, 6) == "detail") {
 		$split = explode('_', $x);
 		$ipid_b = $split[1];
@@ -77,7 +77,5 @@ if (mysqli_multi_query($conn, $sql)) {
 } else {
     echo "Error: " . $sql . "<br>" . mysqli_error($conn);
 }
-
-require 'footer.php';
 ?>
 </html>
