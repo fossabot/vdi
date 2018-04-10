@@ -1,7 +1,7 @@
 <!-- create menu bar that remains at the top of the page when scrolling -->
 <?php require 'include/sql-connect.php'; ?>
 <nav class="navbar sticky-top navbar-dark navbar-expand-lg" style="background-color: #005EB8">
-	<a class="navbar-brand" href="/vdi/">eVDI</a>
+	<a class="navbar-brand" href="/vdi/">eVIMS</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
