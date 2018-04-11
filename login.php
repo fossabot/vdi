@@ -23,11 +23,14 @@ if (isset($_POST['login'])) {
 			//section for checking password
 			$password = $row['password'];
 			$pwhash = strtoupper(hash("sha256", $_POST['psw'] . $salt));
-			if ($password === $pwhash) {
+			if ($row['failed_login'] > 3) { //if > 3 failed login attempts lock the account
+				header('Location: login.php?lock');
+				exit;
+			} elseif ($password === $pwhash) {
 				// set the user cookie
 				$cookie_name = "vdiuser";
 				$cookie_value = GenerateRandomSequenceKey();
-				$cookie_expire = 0; // cookie expires when the browser closes
+				$cookie_expire = time()+(60*60*12); // cookie expires in 12 hours
 				setcookie($cookie_name, $cookie_value, $cookie_expire,"/$url/", "$host", 1, 1);
 				// update user record with cookie value
 				$sql = "UPDATE users SET session_key = '$cookie_value', failed_login = 0 WHERE staff_number = '" . $_POST['usrname'] . "' LIMIT 1";
@@ -52,9 +55,7 @@ if (isset($_POST['login'])) {
 				    echo "Error: " . $sql . "<br>" . $conn->error;
 					exit;
 				}
-			} elseif ($row['failed_login'] > 3) { //if > 3 failed login attempts lock the account
-					header('Location: login.php?lock');
-			} elseif ($row['failed_login'] <= 3) {
+			} elseif (($row['failed_login'] <= 3) AND ($password !== $pwhash)) { //if an incorrect password for a valid account, increment failed_login by 1
 				$sql = "UPDATE users SET failed_login = (failed_login + 1) WHERE staff_number = '" . $_POST['usrname'] . "' LIMIT 1";
 				if ($conn->query($sql) !== TRUE) {
 					die($conn->error);
