@@ -30,8 +30,9 @@ if ($result->num_rows > 0) {
   }
 } else {
   ?>
-  <div class="alert alert-warning" role="alert">
-    <?php echo "Page ID: $b64<br />No results for query: $sql<br />" . $conn->error; ?>
+  <br /><br />
+  <div class="alert alert-info" role="alert">
+    <?php echo "This is a development note - nothing has broken :-)<br />Page ID: $b64<br />No results for query: $sql<br />" . $conn->error; ?>
   </div>
   <?php
 }
