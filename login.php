@@ -22,15 +22,15 @@ if (isset($_POST['login'])) {
 		while($row = $result->fetch_assoc()) {
 			//section for checking password
 			$password = $row['password'];
-			$pwhash = strtoupper(hash("sha256", $_POST['psw']));
-			if ($password == $pwhash) {
+			$pwhash = strtoupper(hash("sha256", $_POST['psw'] . $salt));
+			if ($password === $pwhash) {
 				// set the user cookie
 				$cookie_name = "vdiuser";
 				$cookie_value = GenerateRandomSequenceKey();
 				$cookie_expire = 0; // cookie expires when the browser closes
 				setcookie($cookie_name, $cookie_value, $cookie_expire,"/$url/", "$host", 1, 1);
 				// update user record with cookie value
-				$sql = "UPDATE users SET session_key = '$cookie_value' WHERE staff_number = '" . $_POST['usrname'] . "' LIMIT 1";
+				$sql = "UPDATE users SET session_key = '$cookie_value', failed_login = 0 WHERE staff_number = '" . $_POST['usrname'] . "' LIMIT 1";
 
 				if ($conn->query($sql) === TRUE) {
 						//select user data to add to session variables
@@ -52,8 +52,16 @@ if (isset($_POST['login'])) {
 				    echo "Error: " . $sql . "<br>" . $conn->error;
 					exit;
 				}
+			} elseif ($row['failed_login'] > 3) { //if > 3 failed login attempts lock the account
+					header('Location: login.php?lock');
+			} elseif ($row['failed_login'] <= 3) {
+				$sql = "UPDATE users SET failed_login = (failed_login + 1) WHERE staff_number = '" . $_POST['usrname'] . "' LIMIT 1";
+				if ($conn->query($sql) !== TRUE) {
+					die($conn->error);
+				}
+				header('Location: login.php?error');
 			} else {
-				// incorrect password
+				// incorrect username password
 				header('Location: login.php?error');
 			}
 		}
@@ -78,6 +86,13 @@ if (isset($_POST['login'])) {
 							<div class="alert alert-warning" role="alert">
 								<h3 class="alert-heading">Warning</h3>
 								<p>Your username or password is incorrect. Please try again.</p>
+							</div>
+							<?php
+						} elseif (isset($_GET['lock'])) {
+							?>
+							<div class="alert alert-danger" role="alert">
+								<h3 class="alert-heading">Warning</h3>
+								<p>Your account has been locked. Please contact a DLO.</p>
 							</div>
 							<?php
 						} else {
