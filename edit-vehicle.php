@@ -7,10 +7,10 @@ check_auth(3); // 1 = all users, 2 = supervisor, 3 = DLO & 4 = admin
 <html lang="en">
 <head>
   <?php include_once 'include/scripts.php'; ?>
-    <!-- x-editable (bootstrap version) -->
-    <link href="css/bootstrap-editable.css" rel="stylesheet"/>
-    <script src="js/bootstrap-editable.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.en-GB.min.js" integrity="sha256-zWVLv9rjdSAUVWhtqJUdGV1O5ONXpXMEJsOkp7B2gZ4=" crossorigin="anonymous"></script>
+  <!-- x-editable (bootstrap version) -->
+  <link href="css/bootstrap-editable.css" rel="stylesheet"/>
+  <script src="js/bootstrap-editable.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.en-GB.min.js" integrity="sha256-zWVLv9rjdSAUVWhtqJUdGV1O5ONXpXMEJsOkp7B2gZ4=" crossorigin="anonymous"></script>
 </head>
 <body>
   <?php
