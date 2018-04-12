@@ -47,6 +47,7 @@ if (isset($_POST['login'])) {
 						$_SESSION['name'] = $row['forename'] . " " . $row['surname'];
 						$_SESSION['email'] = $row['email'];
 						$_SESSION['role'] = $row['user_role'];
+						$_SESSION['access_level'] = $row['access_level'];
 						$_SESSION['key'] = $cookie_value;
 
 						$header = "Location: /$url/";
