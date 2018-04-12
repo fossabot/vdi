@@ -1,7 +1,7 @@
 <?php
 require 'include/login-check.php';
 require 'functions/functions.php';
-check_auth(3); //requires supervisor access as a minimum
+check_auth();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,7 +37,7 @@ check_auth(3); //requires supervisor access as a minimum
 
 			if ($result->num_rows > 0) {
 				while($row = $result->fetch_assoc()) {
-          $hash = hash('sha256', $row['callsign']."-".$row['registration']."-".$row['id']."-".$salt); //create sha256 hash to delete a user
+          $hash = hash('sha256', $row['staff_number']."-".$row['surname']."-".$row['id']."-".$salt); //create sha256 hash to delete a user
           if ($row['failed_login'] > 3) {
             $col = "class='table-warning'";
           } else {
@@ -66,7 +66,36 @@ check_auth(3); //requires supervisor access as a minimum
   							<form method="post" name="form_roles<?php echo $row['id']; ?>" action="include/submit-users.php?id=<?php echo $row['id']; ?>">
   				      	<div class="modal-body">
   									<?php
-                    $pages = "SELECT * FROM menu ORDER BY human";
+                    $pages = "SELECT code, CONV(code,2,10) AS hrc, human_readable FROM page_permissions ORDER BY human_readable";
+										$pagesResult = $conn->query($pages);
+
+										if ($pagesResult->num_rows > 0) {
+											while($pagesRow = $pagesResult->fetch_assoc()) {
+												echo "<div class='row'><div class='col-sm'>{$pagesRow['human_readable']}</div>";
+												$x = 0;
+									      $return = 0;
+									      $user = $row['page_access_level'];
+									      $userbin = sprintf("%032b", $user);
+									      $pagebin = sprintf("%032b", $pagesRow['code']);
+									      $usersplit = str_split($userbin);
+									      $pagesplit = str_split($pagebin);
+									      foreach ($usersplit as $value) {
+									        if ($value == $pagesplit[$x] AND $value == 1) {
+									          $return++;
+									        }
+									        $x++;
+									      }
+												echo "<div class='col-sm'>";
+									      if ($return == 1) {
+									        echo "Y";
+									      } elseif ($return > 1) {
+									        echo "E#" . $return;
+									      } else {
+									        echo "N";
+									      }
+												echo "</div></div>";
+											}
+										}
                     ?>
   								</div>
   								<div class="modal-footer">
