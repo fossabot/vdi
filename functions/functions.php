@@ -1,6 +1,6 @@
 <?php
 function check_auth() { //check if a user's authorisation level will let them view a specific page
-  require $_SERVER['DOCUMENT_ROOT'] . '/vdi-dev/include/sql-connect.php';
+  require $_SERVER['DOCUMENT_ROOT'] . '/vdi/include/sql-connect.php';
   $page = trim(basename($_SERVER['PHP_SELF']).PHP_EOL);
   $sql = "SELECT code FROM page_permissions WHERE page = '".$page."'";
   $result = $conn->query($sql);
@@ -36,7 +36,7 @@ function check_auth() { //check if a user's authorisation level will let them vi
 }
 
 function check_user($action) { //check if a user's authorisation level will let them carry out a specific function
-  require $_SERVER['DOCUMENT_ROOT'] . '/vdi-dev/include/sql-connect.php';
+  require $_SERVER['DOCUMENT_ROOT'] . '/vdi/include/sql-connect.php';
   $sql = "SELECT code FROM user_permissions WHERE id = $action";
   $result = $conn->query($sql);
   if ($result->num_rows > 0) {

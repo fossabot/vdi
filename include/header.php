@@ -2,9 +2,6 @@
 <?php
 require 'include/sql-connect.php';
 ?>
-<div class="alert bg-danger" role="alert">
-	<h5>THIS IS THE <b>DEVELOPMENT</b> SYSTEM</h5>
-</div>
 <nav class="navbar sticky-top navbar-dark navbar-expand-lg" style="background-color: #005EB8">
 	<a class="navbar-brand" href="/vdi/">eVIMS</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">

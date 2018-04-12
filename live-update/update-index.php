@@ -99,7 +99,7 @@ $q = $_GET['q']; //gets the live search information
 							while($row_b = $result_b->fetch_assoc()) {
 								echo "<tr><td colspan='3' style='color:red'>" . date('d/m/y H:i', strtotime($row_b['timestamp'])) . "<br />" . $row_b['note'] . "</td>";
 								//allow authorised users to close notes on a vehicle
-								if ($_SESSION['role'] >= 3) {
+								if (check_user(1) == 1) {
 									?><td><button onclick="location.href='include/submit-index-comment.php?delnote=<?php echo $row_b["id"]; ?>&veh=<?php echo $row["id"]; ?>'" class="btn btn-primary">Remove Note</button></tr></td><?php
 								}
 								echo "</tr>";
