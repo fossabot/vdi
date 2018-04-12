@@ -1,5 +1,10 @@
 <!-- create menu bar that remains at the top of the page when scrolling -->
-<?php require 'include/sql-connect.php'; ?>
+<?php
+require 'include/sql-connect.php';
+?>
+<div class="alert bg-danger" role="alert">
+	<h5>THIS IS THE <b>DEVELOPMENT</b> SYSTEM</h5>
+</div>
 <nav class="navbar sticky-top navbar-dark navbar-expand-lg" style="background-color: #005EB8">
 	<a class="navbar-brand" href="/vdi/">eVIMS</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -8,30 +13,36 @@
 	<div class="collapse navbar-collapse" id="navbarNavDropdown">
 		<ul class="navbar-nav">
 			<?php
-			//get user role
-			$role = $_SESSION['role'] + 1;
-
-			//user role name
-			$sql = "SELECT user_role FROM user_role WHERE id = " . $_SESSION['role'];
-			$result = $conn->query($sql);
-			$row = $result->fetch_assoc();
-			$role_txt = $row['user_role'];
-
-			//list all menu items for user role
-			$sql = "SELECT name, link, human FROM menu WHERE (user_role > 0 AND user_role < $role) ORDER BY position";
+			//list all menu items
+			$sql = "SELECT icon, page, human_readable, code FROM page_permissions WHERE display_in_menu = 1 ORDER BY item_position";
 			$result = $conn->query($sql);
 			$mobile = NULL;
 
 			if ($result->num_rows > 0) {
 			// output data of each row
 				while($row = $result->fetch_assoc()) {
-					echo "<li class='nav-item'><a class='nav-link d-none d-lg-block' href='" . $row['link'] . "'>" . $row['name'] . "</a><a class='nav-link d-lg-none text-light' href='" . $row['link'] . "'>" . $row['name'] . " " . $row['human'] . "</a></li>";
+					$x = 0;
+		      $return = 0;
+		      $user = $_SESSION['access_level'];
+		      $userbin = sprintf("%032b", $user);
+		      $pagebin = sprintf("%032b", $row['code']);
+		      $usersplit = str_split($userbin);
+		      $pagesplit = str_split($pagebin);
+		      foreach ($usersplit as $value) {
+		        if ($value == $pagesplit[$x] AND $value == 1) {
+		          $return++;
+		        }
+		        $x++;
+		      }
+		      if ($return == 1) {
+		        echo "<li class='nav-item'><a class='nav-link d-none d-lg-block' href='" . $row['page'] . "'>" . $row['icon'] . "</a><a class='nav-link d-lg-none text-light' href='" . $row['page'] . "'>" . $row['icon'] . " " . $row['human_readable'] . "</a></li>";
+		      }
 				}
 			}
 			$conn->close();
 			?>
 			<li class="nav-item d-lg-none"><a class="nav-link text-light" data-toggle="modal" data-target="#helpMe"><i class="fas fa-question-circle fa-lg text-white" data-toggle="tooltip" data-placement="bottom" title="Help"></i> Help</a></li>
-			<li><span class="navbar-text">Logged in as <?php echo $_SESSION['name'] . " ($role_txt)"; ?></span></li>
+			<li><span class="navbar-text">Logged in as <?php echo $_SESSION['name']; ?></span></li>
 		</ul>
 	</div>
 	<div class="mr-auto d-none d-lg-block">

@@ -1,7 +1,7 @@
 <?php
 require '../include/login-check.php';
 require '../functions/functions.php';
-check_auth(3); // 1 = all users, 2 = supervisor, 3 = DLO & 4 = admin
+check_auth(); // 1 = all users, 2 = supervisor, 3 = DLO & 4 = admin
 if (isset($_GET['db'])) {
   include '../include/sql-connect.php';
   $table = $_GET['db'];

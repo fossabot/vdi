@@ -2,6 +2,8 @@
 <?php
 session_start();
 require '../include/sql-connect.php';
+require '../functions/functions.php';
+check_auth();
 $count = 1;
 $q = $_GET['q']; //gets the live search information
 ?>
@@ -68,24 +70,21 @@ $q = $_GET['q']; //gets the live search information
 				<fieldset>
 					<legend>
 						<?php
-						if ($_SESSION['role'] == 1) {
-							?><button onclick="location.href='vdi.php?veh=<?php echo base64_encode($row["id"] . "-" . time()); ?>';" id="<?php echo $row["id"]; ?>" class="btn <?php echo $button; ?>"><?php echo $row["callsign"] . " - " . $row["registration"]; ?></button><?php
-						} elseif ($_SESSION['role'] >= 2) { //add a VDI history button if supervisor or above
+
+						if (check_user(1) == 1) { //add a VDI history button if supervisor or above
 							?>
 							<div class="dropdown">
 								<button class="btn <?php echo $button; ?> dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $row["callsign"] . " - " . $row["registration"]; ?></button>
 								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 									<button onclick="location.href='vdi.php?veh=<?php echo base64_encode($row["id"] . "-" . time()); ?>';" id="<?php echo $row["id"]; ?>" class="dropdown-item" type="button">Carry Out VDI</button>
 									<button onclick='location.href="vdi-history.php?veh=<?php echo $row["id"]; ?>";' class='dropdown-item' type="button">VDI History</button>
-									<?php
-									//allow authorised users to add a comment to the vehicle screen
-									if ($_SESSION['role'] >= 3) {
-										?><button data-target="#note<?php echo $row['id']; ?>" data-toggle="modal" class="dropdown-item" type="button">Add Note</button><?php
-									}
+									<button data-target="#note<?php echo $row['id']; ?>" data-toggle="modal" class="dropdown-item" type="button">Add Note</button><?php
 									?>
 								</div>
 							</div>
 							<?php
+						} else { //for all other users display this
+							?><button onclick="location.href='vdi.php?veh=<?php echo base64_encode($row["id"] . "-" . time()); ?>';" id="<?php echo $row["id"]; ?>" class="btn <?php echo $button; ?>"><?php echo $row["callsign"] . " - " . $row["registration"]; ?></button><?php
 						}
 						?>
 					</legend>
