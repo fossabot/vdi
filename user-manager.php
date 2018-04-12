@@ -66,7 +66,7 @@ check_auth();
   							<form method="post" name="form_roles<?php echo $row['id']; ?>" action="include/submit-users.php?id=<?php echo $row['id']; ?>">
   				      	<div class="modal-body">
   									<?php
-                    $pages = "SELECT code, CONV(code,2,10) AS hrc, human_readable FROM page_permissions ORDER BY human_readable";
+                    $pages = "SELECT code, CONV(code,2,10) AS hrc, human_readable FROM page_permissions WHERE display_in_menu = 1 ORDER BY human_readable";
 										$pagesResult = $conn->query($pages);
 
 										if ($pagesResult->num_rows > 0) {
