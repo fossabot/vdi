@@ -1,4 +1,5 @@
 <?php
+require 'login-check.php';
 if (isset($_GET['row'])) {
   $form_note = "comment" . $_GET['row'];
   if (isset($_POST[$form_note])) {
