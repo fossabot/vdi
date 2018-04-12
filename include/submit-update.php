@@ -1,5 +1,6 @@
 <?php
 session_start();
+require 'login-check.php';
 require 'sql-connect.php';
 
 //create variables
