@@ -42,7 +42,7 @@ check_auth();
 
     <?php
     require 'include/sql-connect.php';
-    if ($_GET['mode'] === "view") { //script to view an asset
+    if (isset($_GET['mode']) AND $_GET['mode'] === "view") { //script to view an asset
       $id = $_GET['id'];
       $table = $_GET['type'];
       //work out which table data is going to be pulled from

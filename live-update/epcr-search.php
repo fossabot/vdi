@@ -1,5 +1,6 @@
 <?php
-require '../functions/functions.php'
+session_start();
+require '../functions/functions.php';
 check_auth();
 //function to generate datalist for search box
 function datalist($db, $col, $search, $post, $btn) {
