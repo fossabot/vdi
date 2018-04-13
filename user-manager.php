@@ -63,15 +63,23 @@ check_auth();
   				          <span aria-hidden="true">&times;</span>
   				        </button>
   				      </div>
-  							<form method="post" name="form_roles<?php echo $row['id']; ?>" action="include/submit-users.php?id=<?php echo $row['id']; ?>">
+  							<form method="post" name="form_roles<?php echo $row['id']; ?>" action="include/submit-roles.php" onsubmit="return confirm('Are you sure you wish alter permissions for <?php echo "{$row['forename']} {$row['surname']}"; ?>?');">
   				      	<div class="modal-body">
+										<div class="row">
+											<div class="col-sm" style="text-align:center"><b>Page</b></div>
+											<div class="col-sm" style="text-align:center"><b>Granted</b></div>
+											<div class="col-sm" style="text-align:center"><b>Denied</b></div>
+										</div>
+										<hr />
   									<?php
-                    $pages = "SELECT code, CONV(code,2,10) AS hrc, human_readable FROM page_permissions WHERE display_in_menu = 1 ORDER BY human_readable";
+										//page permission
+                    $pages = "SELECT id, code, human_readable FROM page_permissions WHERE display_in_menu = 1 ORDER BY human_readable";
 										$pagesResult = $conn->query($pages);
 
-										if ($pagesResult->num_rows > 0) {
+										if ($pagesResult->num_rows > 0) { //gets the selected user's access permissions here
 											while($pagesRow = $pagesResult->fetch_assoc()) {
 												echo "<div class='row'><div class='col-sm'>{$pagesRow['human_readable']}</div>";
+
 												$x = 0;
 									      $return = 0;
 									      $user = $row['page_access_level'];
@@ -85,20 +93,58 @@ check_auth();
 									        }
 									        $x++;
 									      }
-												echo "<div class='col-sm'>";
-									      if ($return == 1) {
-									        echo "Y";
-									      } elseif ($return > 1) {
-									        echo "E#" . $return;
-									      } else {
-									        echo "N";
+												echo "";
+									      if ($return == 1) { //if the selected user currently has acces to this page..
+									        echo "<div class='col-sm form-check' style='text-align:center'><input class='form-check-input' type='radio' name='pg{$row['id']}attr{$pagesRow['id']}' value='1' checked></div>";
+													echo "<div class='col-sm form-check' style='text-align:center'><input class='form-check-input' type='radio' name='pg{$row['id']}attr{$pagesRow['id']}' value='0'></div>";
+									      } elseif ($return > 1) { //this is an error reporting bit
+									        echo "E#" . $return; exit;
+									      } else { //else
+													echo "<div class='col-sm form-check' style='text-align:center'><input class='form-check-input 'type='radio' name='pg{$row['id']}attr{$pagesRow['id']}' value='1'></div>";
+													echo "<div class='col-sm form-check' style='text-align:center'><input class='form-check-input' type='radio' name='pg{$row['id']}attr{$pagesRow['id']}' value='0' checked></div>";
 									      }
-												echo "</div></div>";
+												echo "</div>";
+											}
+										}
+										echo "<hr>";
+										//user permissions
+										$pages = "SELECT * FROM user_permissions ORDER BY user_role";
+										$pagesResult = $conn->query($pages);
+
+										if ($pagesResult->num_rows > 0) { //gets the selected user's access permissions here
+											while($pagesRow = $pagesResult->fetch_assoc()) {
+												echo "<div class='row'><div class='col-sm'>{$pagesRow['user_role']}</div>";
+
+												$x = 0;
+									      $return = 0;
+									      $user = $row['user_access_level'];
+									      $userbin = sprintf("%032b", $user);
+									      $pagebin = sprintf("%032b", $pagesRow['code']);
+									      $usersplit = str_split($userbin);
+									      $pagesplit = str_split($pagebin);
+									      foreach ($usersplit as $value) {
+									        if ($value == $pagesplit[$x] AND $value == 1) {
+									          $return++;
+									        }
+									        $x++;
+									      }
+												echo "";
+									      if ($return == 1) { //if the selected user currently has acces to this page..
+									        echo "<div class='col-sm form-check' style='text-align:center'><input class='form-check-input' type='radio' name='user{$row['id']}attr{$pagesRow['id']}' value='1' checked></div>";
+													echo "<div class='col-sm form-check' style='text-align:center'><input class='form-check-input' type='radio' name='user{$row['id']}attr{$pagesRow['id']}' value='0'></div>";
+									      } elseif ($return > 1) { //this is an error reporting bit
+									        echo "E#" . $return; exit;
+									      } else { //else
+													echo "<div class='col-sm form-check' style='text-align:center'><input class='form-check-input 'type='radio' name='user{$row['id']}attr{$pagesRow['id']}' value='1'></div>";
+													echo "<div class='col-sm form-check' style='text-align:center'><input class='form-check-input' type='radio' name='user{$row['id']}attr{$pagesRow['id']}' value='0' checked></div>";
+									      }
+												echo "</div>";
 											}
 										}
                     ?>
   								</div>
   								<div class="modal-footer">
+										<input type="hidden" name="userid" value="<?php echo $row['id']; ?>">
   									<button class="btn btn-primary" type="submit">Update</button>
   									<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
   								</div>

@@ -39,6 +39,7 @@ require 'include/sql-connect.php';
 			$conn->close();
 			?>
 			<li class="nav-item d-lg-none"><a class="nav-link text-light" data-toggle="modal" data-target="#helpMe"><i class="fas fa-question-circle fa-lg text-white" data-toggle="tooltip" data-placement="bottom" title="Help"></i> Help</a></li>
+			<li class='nav-item'><a class='nav-link d-none d-lg-block' href='login.php?logout'><i class="fas fa-sign-out-alt fa-lg text-white" data-toggle="tooltip" data-placement="bottom" title="Sign Out"></i></a><a class='nav-link d-lg-none text-light' href='login.php?logout'><i class="fas fa-sign-out-alt fa-lg text-white" data-toggle="tooltip" data-placement="bottom" title="Sign Out"></i> Sign Out</a></li>
 			<li><span class="navbar-text">Logged in as <?php echo $_SESSION['name']; ?></span></li>
 		</ul>
 	</div>
